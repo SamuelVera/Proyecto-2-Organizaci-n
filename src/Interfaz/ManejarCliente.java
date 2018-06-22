@@ -4,6 +4,7 @@ import Accesos.Cliente;
 import Accesos.Indice;
 import Controladores.RandomAccessCliente;
 import java.io.IOException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -35,6 +36,7 @@ public class ManejarCliente extends javax.swing.JFrame {
         texto5 = new javax.swing.JLabel();
         texto6 = new javax.swing.JLabel();
         modificar = new javax.swing.JButton();
+        devolver = new javax.swing.JButton();
         texto7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -46,6 +48,11 @@ public class ManejarCliente extends javax.swing.JFrame {
         campoCi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 campoCiActionPerformed(evt);
+            }
+        });
+        campoCi.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                campoCiKeyTyped(evt);
             }
         });
         getContentPane().add(campoCi, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 350, 30));
@@ -63,14 +70,14 @@ public class ManejarCliente extends javax.swing.JFrame {
         });
         getContentPane().add(botonBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 70, 80, -1));
 
-        volver.setFont(new java.awt.Font("Sylfaen", 0, 12)); // NOI18N
-        volver.setText("Volver a Ventana Principal");
+        volver.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        volver.setText("Volver");
         volver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 volverActionPerformed(evt);
             }
         });
-        getContentPane().add(volver, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 270, 170, 20));
+        getContentPane().add(volver, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 270, 80, 20));
 
         irAgregarCliente.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         irAgregarCliente.setText("Agregar Cliente");
@@ -88,7 +95,7 @@ public class ManejarCliente extends javax.swing.JFrame {
                 eliminarActionPerformed(evt);
             }
         });
-        getContentPane().add(eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 150, 20));
+        getContentPane().add(eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 140, 20));
 
         texto2.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         texto2.setText("CI:");
@@ -117,7 +124,11 @@ public class ManejarCliente extends javax.swing.JFrame {
                 modificarActionPerformed(evt);
             }
         });
-        getContentPane().add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 150, 20));
+        getContentPane().add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 140, 20));
+
+        devolver.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        devolver.setText("Devolver Película");
+        getContentPane().add(devolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 270, 150, 20));
         getContentPane().add(texto7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
 
         pack();
@@ -205,9 +216,17 @@ public class ManejarCliente extends javax.swing.JFrame {
             
             this.texto2.setText("CI: "+c.getCi());
             this.texto3.setText("Nombre y Apellido: "+auxNom+" "+auxApe);
-            this.texto4.setText("Película alquilada: "+c.getPelicula());
-            this.texto5.setText("Fecha de Alquiler: "+c.getFechaAlq());
-            this.texto6.setText("Fecha máxima de Devolución: "+c.getFechaDevol());
+            if("0".equals(c.getPelicula())){
+                this.texto4.setText("Película alquilada: 0");
+                this.texto5.setText("Fecha de Alquiler: NA");
+                this.texto6.setText("Fecha máxima de Devolución: NA");
+            }else{
+                this.texto4.setText("Película alquilada: "+c.getPelicula());
+                Date fechaA = new Date(c.getFechaAlq());
+                this.texto5.setText("Fecha de Alquiler: "+ fechaA.toString());
+                fechaA = new Date(c.getFechaDevol());
+                this.texto6.setText("Fecha máxima de Devolución: "+ fechaA.toString());
+            }
             
         } catch (IOException ex) {
             Logger.getLogger(ManejarCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -238,9 +257,20 @@ public class ManejarCliente extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_modificarActionPerformed
 
+    private void campoCiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoCiKeyTyped
+        char validar = evt.getKeyChar();
+            //Sin espacios ni letras
+        if(Character.isLetter(validar) || Character.isSpaceChar(validar)){
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(rootPane, "INGRESAR SOLO NÚMEROS","    ¡¡ERROR!!",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_campoCiKeyTyped
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonBuscar;
     private javax.swing.JTextField campoCi;
+    private javax.swing.JButton devolver;
     private javax.swing.JButton eliminar;
     private javax.swing.JButton irAgregarCliente;
     private javax.swing.JButton modificar;

@@ -10,9 +10,25 @@ import javax.swing.JOptionPane;
 
 public class AgregarPelicula extends javax.swing.JFrame {
 
+    private Indice in;
+    
     public AgregarPelicula() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.modificar.setVisible(false);
+    }
+    
+    public AgregarPelicula(Indice in) throws IOException{
+        initComponents();
+        this.setLocationRelativeTo(null);
+        this.in = in;
+        Pelicula p = RandomAccessPelicula.buscarReg(in.getNumReg());
+        this.campo1.setText(p.getTitulo());
+        this.campo2.setText(p.getGenero());
+        this.campo3.setText(p.getDescripcion());
+        this.campo4.setText(""+p.getPrecioDia());
+        this.campo6.setText(""+p.getStock());
+        this.agregar.setVisible(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -32,6 +48,7 @@ public class AgregarPelicula extends javax.swing.JFrame {
         campo3 = new javax.swing.JTextArea();
         volver = new javax.swing.JButton();
         agregar = new javax.swing.JButton();
+        modificar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -97,6 +114,15 @@ public class AgregarPelicula extends javax.swing.JFrame {
             }
         });
         getContentPane().add(agregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 300, 90, 20));
+
+        modificar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        modificar.setText("Modificar");
+        modificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modificarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 300, -1, 20));
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 330));
 
         pack();
@@ -164,6 +190,80 @@ public class AgregarPelicula extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_volverActionPerformed
 
+    private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
+        if(this.campo1.getText().trim().length() == 0){
+            JOptionPane.showMessageDialog(this, "¡No se ingreso el título!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if(this.campo2.getText().trim().length() == 0){
+            JOptionPane.showMessageDialog(this, "¡No se ingreso el género!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if(this.campo3.getText().trim().length() == 0){
+            JOptionPane.showMessageDialog(this, "¡No se ingreso la descripción!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }else if(this.campo3.getText().trim().length() > 60){
+            JOptionPane.showMessageDialog(this, "¡Se excedió la capacidad de caractares en la descripción(60)!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if(this.campo4.getText().trim().length() == 0){
+            JOptionPane.showMessageDialog(this, "¡No se ingreso el precio de alquiler por día!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if(this.campo6.getText().trim().length() == 0){
+            JOptionPane.showMessageDialog(this, "¡No se ingreso Stock de la película!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+            //Verificar si hay una película por el mismo título
+        if(VenInicio.BusBinString(this.campo1.getText(),VenInicio.indPrimPeli) != -1){
+            JOptionPane.showMessageDialog(this, "¡Ya hay película por este nombre!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        try {
+            //Preparar datos de modificación
+            Pelicula p = RandomAccessPelicula.buscarReg(this.in.getNumReg());
+            p.setPrecioDia(Long.parseLong(this.campo4.getText()));
+            p.setStock(Integer.parseInt(this.campo6.getText()));
+            p.setDesc(this.campo3.getText());
+            p.setTitulo(this.campo1.getText());
+            p.setGenero(this.campo2.getText());
+            
+            Object[] aux = VenInicio.indPrimPeli.toArray();
+            int tope = 0, fondo = aux.length-1;
+            int med = (tope+fondo)/2;
+            
+            while(!((Indice)aux[med]).getClave2().equals(this.in.getClave2())){
+                if(this.in.getClave2().compareTo(((Indice)aux[med]).getClave2()) > 0){
+                    tope = med+1;
+                    if(((Indice)aux[med]).getClave2().equals(this.in.getClave2())){
+                        break;
+                    }
+                }else{
+                    fondo = med-1;
+                    if(((Indice)aux[med]).getClave2().equals(this.in.getClave2())){
+                        break;
+                    }
+                }
+                med = (tope+fondo)/2;
+            }
+            
+            this.in.setClave2(this.campo1.getText());
+            VenInicio.indPrimPeli.remove(med);
+            VenInicio.indPrimPeli.add(med,this.in);
+            
+            RandomAccessPelicula.ingresarReg(p,this.in.getNumReg());
+            
+        } catch (IOException ex) {
+            Logger.getLogger(AgregarPelicula.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        ManejarPelicula aux = new ManejarPelicula();
+        aux.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_modificarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregar;
     private javax.swing.JTextField campo1;
@@ -173,6 +273,7 @@ public class AgregarPelicula extends javax.swing.JFrame {
     private javax.swing.JTextField campo6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton modificar;
     private javax.swing.JLabel texto1;
     private javax.swing.JLabel texto2;
     private javax.swing.JLabel texto3;

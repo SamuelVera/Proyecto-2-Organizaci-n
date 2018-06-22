@@ -88,6 +88,16 @@ public class AgregarCliente extends javax.swing.JFrame {
         getContentPane().add(texto1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 280, 20));
 
         campo1.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        campo1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campo1ActionPerformed(evt);
+            }
+        });
+        campo1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                campo1KeyTyped(evt);
+            }
+        });
         getContentPane().add(campo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 380, 30));
 
         texto2.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
@@ -144,7 +154,7 @@ public class AgregarCliente extends javax.swing.JFrame {
         
             //Validación de números
         
-        int ci = Integer.parseInt(this.campo1.getText());
+        int ci = Integer.parseInt(this.campo1.getText().trim());
         String nomape = this.campo2.getText() +"%"+ this.campo3.getText();
         
             //Verificar si ya se ha añadido esa cédula
@@ -208,7 +218,7 @@ public class AgregarCliente extends javax.swing.JFrame {
             //Validación de números
         
             //Verificar si no existe cliente con esa cédula
-        int ci = Integer.parseInt(this.campo1.getText());
+        int ci = Integer.parseInt(this.campo1.getText().trim());
         if(VenInicio.BusBin(ci, VenInicio.indClien) != -1){
             JOptionPane.showMessageDialog(this, "¡Ya existe cliente con esa cédula!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
@@ -252,14 +262,25 @@ public class AgregarCliente extends javax.swing.JFrame {
             Logger.getLogger(AgregarCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
-        
-        
             //Salir
         ManejarCliente aux = new ManejarCliente();
         aux.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_modificarActionPerformed
+
+    private void campo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campo1ActionPerformed
+        
+    }//GEN-LAST:event_campo1ActionPerformed
+
+    private void campo1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campo1KeyTyped
+        char validar = evt.getKeyChar();
+            //Sin espacios ni letras
+        if(Character.isLetter(validar) || Character.isSpaceChar(validar)){
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(rootPane, "INGRESAR SOLO NÚMEROS","    ¡¡ERROR!!",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_campo1KeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregar;

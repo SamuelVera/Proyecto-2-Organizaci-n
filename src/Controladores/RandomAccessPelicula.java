@@ -45,6 +45,21 @@ public class RandomAccessPelicula {
         RegNum++;
     }
     
+    public static void ingresarReg(Pelicula p, int pos1) throws IOException{
+        long pos = RegTam*pos1;
+            //Posición del archivo
+        flujo.seek(pos);
+            //Escribir en la posición
+        flujo.writeUTF(p.getTitulo());
+        flujo.writeLong(p.getPrecioDia());
+        flujo.writeInt(p.getRating());
+        flujo.writeUTF(p.getGenero());
+        flujo.writeInt(p.getStock());
+        flujo.writeUTF(p.getDescripcion());
+        
+        RegNum++;
+    }
+    
         //Retrar toda la información del registro
     public static Pelicula buscarReg(int posReg) throws IOException{
         long pos = RegTam*posReg;

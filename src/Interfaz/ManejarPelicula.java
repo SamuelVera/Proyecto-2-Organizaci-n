@@ -1,9 +1,12 @@
 package Interfaz;
 
+import Accesos.Cliente;
 import Accesos.Indice;
 import Accesos.Pelicula;
+import Controladores.RandomAccessCliente;
 import Controladores.RandomAccessPelicula;
 import java.io.IOException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -113,15 +116,15 @@ public class ManejarPelicula extends javax.swing.JFrame {
 
         res1.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         res1.setText("Título: ");
-        getContentPane().add(res1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 450, 30));
+        getContentPane().add(res1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 430, 30));
 
         res2.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         res2.setText("Género: ");
-        getContentPane().add(res2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 450, 30));
+        getContentPane().add(res2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 430, 30));
 
         res4.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         res4.setText("Precio de alquiler: ");
-        getContentPane().add(res4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 450, 30));
+        getContentPane().add(res4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 430, 30));
 
         res3.setEditable(false);
         res3.setColumns(20);
@@ -156,10 +159,15 @@ public class ManejarPelicula extends javax.swing.JFrame {
 
         res5.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         res5.setText("Stock: ");
-        getContentPane().add(res5, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 360, 310, 30));
+        getContentPane().add(res5, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 360, 290, 30));
 
         comprar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         comprar.setText("Alquilar Película");
+        comprar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comprarActionPerformed(evt);
+            }
+        });
         getContentPane().add(comprar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, 160, 20));
 
         modificar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
@@ -170,7 +178,7 @@ public class ManejarPelicula extends javax.swing.JFrame {
             }
         });
         getContentPane().add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 410, 160, 20));
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 460));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 460));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -264,8 +272,89 @@ public class ManejarPelicula extends javax.swing.JFrame {
     }//GEN-LAST:event_eliminarActionPerformed
 
     private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
-        
+        AgregarPelicula aux;
+        try {
+            aux = new AgregarPelicula(this.peliModi);
+            aux.setVisible(true);
+            this.dispose();
+        } catch (IOException ex) {
+            Logger.getLogger(ManejarPelicula.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_modificarActionPerformed
+
+    private void comprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comprarActionPerformed
+        
+        try {
+            if(RandomAccessPelicula.buscarReg(this.peliModi.getNumReg()).getStock() == 0){
+                JOptionPane.showMessageDialog(this, "¡No hay copias de la película en el stock!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ManejarPelicula.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        String s = JOptionPane.showInputDialog(this, "CI: ", "Ingrese cédula del cliente que va a alquilar", JOptionPane.INFORMATION_MESSAGE);
+        if(s.length() == 0){
+            JOptionPane.showMessageDialog(this, "¡Se debe llenar el campo!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if(Integer.parseInt(s) <= 0){
+            JOptionPane.showMessageDialog(this, "¡No existe cédula negativa!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        
+        int ci = Integer.parseInt(s.trim());
+        int aux = VenInicio.BusBin(ci, VenInicio.indClien);
+        
+        if(aux == -1){
+            JOptionPane.showMessageDialog(this, "¡No existe cliente registrado por esa cédula!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        try {
+                //Datos a manejar
+            Cliente c = RandomAccessCliente.buscarReg(aux);
+            Pelicula p = RandomAccessPelicula.buscarReg(this.peliModi.getNumReg());
+            
+                //Validaciones
+            if(!"0".equals(c.getPelicula())){
+                JOptionPane.showMessageDialog(this, "¡El cliente ya ha alquilado una película!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            boolean pasa = false;
+            int dias = 1;
+            while(pasa == false){
+                s = JOptionPane.showInputDialog(this, "Días: ", "Ingrese días de alquier (Máximo 9)", JOptionPane.INFORMATION_MESSAGE);
+                dias = Integer.parseInt(s);
+                if(dias <= 0 || dias > 9){
+                    JOptionPane.showMessageDialog(this, "¡Ingresar entre 1 y 9 días!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                }else{
+                    pasa = true;
+                }
+            }
+            
+                //Actualización de fecha
+            Date alq = new Date();
+            c.setPelicula(p.getTitulo());
+            c.setFechaAlq(alq.getTime());
+            c.setFechaVenc(alq.getTime()+(86400000*dias));
+            
+                //Actualización de stock
+            p.setStock(p.getStock()-1);
+            this.res5.setText("Stock: "+p.getStock()+" Unidades");
+            
+                //Actualización de los archivos
+            RandomAccessCliente.ingresarReg(c, aux);
+            RandomAccessPelicula.ingresarReg(p, this.peliModi.getNumReg());
+            
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ManejarPelicula.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_comprarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> CampoRating;

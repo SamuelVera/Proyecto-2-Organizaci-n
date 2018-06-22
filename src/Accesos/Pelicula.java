@@ -14,6 +14,18 @@ public class Pelicula {
         this.rating = rating;
     }
     
+    public void setDesc(String desc){
+        this.descripcion = desc;
+    }
+    
+    public void setGenero(String genero){
+        this.genero = genero;
+    }
+    
+    public void setTitulo(String titulo){
+        this.titulo = titulo;
+    }
+    
     public void setStock(int stock) {
         this.stock = stock;
     }

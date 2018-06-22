@@ -12,8 +12,8 @@ public class Cliente {
         this.ci = ci;
         this.nomape = nomape;
         this.pelicula = pelicula;
-        this.fechaAlq = new Date(fechaAlq*1000);
-        this.fechaDevol = new Date(fechaDevol*1000);
+        this.fechaAlq = new Date(fechaAlq);
+        this.fechaDevol = new Date(fechaDevol);
     }
 
     public void setCi(int ci){
@@ -40,6 +40,14 @@ public class Cliente {
         this.pelicula = pelicula;
     }
 
+    public void setFechaAlq(long fecha){
+        this.fechaAlq = new Date(fecha);
+    }
+    
+    public void setFechaVenc(long fecha){
+        this.fechaDevol = new Date(fecha);
+    }
+    
     public long getFechaAlq() {
         if(this.pelicula.equals("0")){
             return 0;
