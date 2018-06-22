@@ -1,5 +1,6 @@
 package Interfaz;
 
+import Accesos.Indice;
 import Accesos.Pelicula;
 import Controladores.RandomAccessPelicula;
 import java.io.IOException;
@@ -9,6 +10,8 @@ import javax.swing.JOptionPane;
 
 public class ManejarPelicula extends javax.swing.JFrame {
 
+    private Indice peliModi;
+    
     public ManejarPelicula() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -56,7 +59,7 @@ public class ManejarPelicula extends javax.swing.JFrame {
                 volverActionPerformed(evt);
             }
         });
-        getContentPane().add(volver, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 430, 170, 20));
+        getContentPane().add(volver, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 430, 170, 20));
 
         texto1.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         texto1.setText("Buscar por Género:");
@@ -71,7 +74,7 @@ public class ManejarPelicula extends javax.swing.JFrame {
         getContentPane().add(texto3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 160, -1));
 
         campoTitulo.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
-        getContentPane().add(campoTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 450, 30));
+        getContentPane().add(campoTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 420, 30));
 
         buscar1.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         buscar1.setText("Buscar");
@@ -80,10 +83,10 @@ public class ManejarPelicula extends javax.swing.JFrame {
                 buscar1ActionPerformed(evt);
             }
         });
-        getContentPane().add(buscar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 60, 80, 20));
+        getContentPane().add(buscar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 60, 80, 20));
 
         campoGenero.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
-        getContentPane().add(campoGenero, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 450, 30));
+        getContentPane().add(campoGenero, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 420, 30));
 
         buscar2.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         buscar2.setText("Buscar");
@@ -92,7 +95,7 @@ public class ManejarPelicula extends javax.swing.JFrame {
                 buscar2ActionPerformed(evt);
             }
         });
-        getContentPane().add(buscar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 110, 80, 20));
+        getContentPane().add(buscar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 110, 80, 20));
 
         CampoRating.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         CampoRating.setMaximumRowCount(6);
@@ -127,10 +130,15 @@ public class ManejarPelicula extends javax.swing.JFrame {
         res3.setText("Descripción:");
         jScrollPane1.setViewportView(res3);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 450, 110));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 420, 110));
 
         eliminar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         eliminar.setText("Eliminar Película");
+        eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarActionPerformed(evt);
+            }
+        });
         getContentPane().add(eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 160, 20));
 
         IrAgregar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
@@ -140,7 +148,7 @@ public class ManejarPelicula extends javax.swing.JFrame {
                 IrAgregarActionPerformed(evt);
             }
         });
-        getContentPane().add(IrAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 60, 160, 20));
+        getContentPane().add(IrAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 160, 20));
 
         res6.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         res6.setText("Rating: ");
@@ -156,6 +164,11 @@ public class ManejarPelicula extends javax.swing.JFrame {
 
         modificar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         modificar.setText("Modificar Película");
+        modificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modificarActionPerformed(evt);
+            }
+        });
         getContentPane().add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 410, 160, 20));
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 460));
 
@@ -183,18 +196,21 @@ public class ManejarPelicula extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "¡No se ingreso un título!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        int aux = VenInicio.BusBinTit(this.campoTitulo.getText());
+        int aux = VenInicio.BusBinString(this.campoTitulo.getText(),VenInicio.indPrimPeli);
+        
         if(aux == -1){
             JOptionPane.showMessageDialog(this, "¡No existe película por ese título!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
         try {
+            this.peliModi = VenInicio.indPrimPeliAcc.buscarRegString(aux);
+        } catch (IOException ex) {
+            Logger.getLogger(ManejarPelicula.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
             Pelicula p = RandomAccessPelicula.buscarReg(aux);
-            if(!p.registroIsDisponible()){
-                JOptionPane.showMessageDialog(this, "¡No existe película por ese título!", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
             this.res1.setText("Título: "+p.getTitulo());
             this.res2.setText("Género: "+p.getGenero());
             this.res3.setText("Descripción: "+p.getDescripcion());
@@ -213,6 +229,43 @@ public class ManejarPelicula extends javax.swing.JFrame {
     private void buscar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscar2ActionPerformed
         
     }//GEN-LAST:event_buscar2ActionPerformed
+
+    private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
+        this.peliModi.setNumReg(-1);
+        
+        Object[] aux = VenInicio.indPrimPeli.toArray();
+        int tope = 0, fondo = aux.length-1;
+        int med = (tope+fondo)/2;
+        
+        while(!((Indice)aux[med]).getClave2().equals(this.peliModi.getClave2())){
+            if(this.peliModi.getClave2().compareTo(((Indice)aux[med]).getClave2()) > 0){
+                tope = med+1;
+                if(((Indice)aux[med]).getClave2().equals(this.peliModi.getClave2())){
+                    break;
+                }
+            }else{
+                fondo = med-1;
+                if(((Indice)aux[med]).getClave2().equals(this.peliModi.getClave2())){
+                    break;
+                }
+            }
+            med = (tope+fondo)/2;
+        }
+        
+        VenInicio.indPrimPeli.remove(med);
+        VenInicio.indPrimPeli.add(med, this.peliModi);
+        
+        this.res1.setText("Título: ");
+            this.res2.setText("Género: ");
+            this.res3.setText("Descripción: ");
+            this.res4.setText("Precio de Alquiler: ");
+            this.res5.setText("Stock: ");
+            this.res6.setText("Rating: ");
+    }//GEN-LAST:event_eliminarActionPerformed
+
+    private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
+        
+    }//GEN-LAST:event_modificarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> CampoRating;

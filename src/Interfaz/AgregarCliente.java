@@ -1,6 +1,7 @@
 package Interfaz;
 
 import Accesos.Cliente;
+import Accesos.Indice;
 import Controladores.RandomAccessCliente;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -9,7 +10,7 @@ import javax.swing.JOptionPane;
 
 public class AgregarCliente extends javax.swing.JFrame {
     
-    private Cliente clienModi;
+    private Indice in;
     
         //Agregar a un cliente
     public AgregarCliente() {
@@ -19,11 +20,12 @@ public class AgregarCliente extends javax.swing.JFrame {
     }
 
         //Cambiar info del cliente
-    public AgregarCliente(Cliente c) {
+    public AgregarCliente(Indice in) throws IOException {
         initComponents();
         this.setLocationRelativeTo(null);
         this.agregar.setVisible(false);
-        this.clienModi = c;
+        this.in = in;
+        Cliente c = RandomAccessCliente.buscarReg(in.getNumReg());
         this.campo1.setText(((Integer)c.getCi()).toString());
         String auxNom = "", auxApe = "";
         char[] aux = c.getNomape().toCharArray();
@@ -146,27 +148,37 @@ public class AgregarCliente extends javax.swing.JFrame {
         String nomape = this.campo2.getText() +"%"+ this.campo3.getText();
         
             //Verificar si ya se ha añadido esa cédula
-        if(VenInicio.BusBinCi(ci)!= -1){
+        if(VenInicio.BusBin(ci,VenInicio.indClien)!= -1){
             JOptionPane.showMessageDialog(this, "¡Ya existe cliente con esa cédula!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
-        Cliente c = new Cliente(true, ci, nomape, 0, "0", 0, VenInicio.clientes.size());
-        VenInicio.clientes.add(c);
+            //Nuevo cliente que agregar
+        Cliente c = new Cliente(ci, nomape, 0, "0", 0);
         
+            //Agregar clave principal del cliente
+        Indice in = new Indice(c.getCi(),"",RandomAccessCliente.getRegNum());
+        VenInicio.indClien.addLast(in);
+        
+            //Ordenar indices
+        Object[] aux = VenInicio.ordenarClaves(VenInicio.indClien);
+        VenInicio.indClien.clear();
+        
+        for(int i=0;i<aux.length;i++){
+            VenInicio.indClien.addLast(aux[i]);
+        }
         
             //Escritura de los datos en el archivo
         try {
             RandomAccessCliente.ingresarReg(c);
+            VenInicio.indClienAcc.ingresarRegInt(in,in.getNumReg());
         } catch (IOException ex) {
             Logger.getLogger(AgregarCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        VenInicio.ordenarClien();
-        
             //Salir
-        ManejarCliente aux = new ManejarCliente();
-        aux.setVisible(true);
+        ManejarCliente aux2 = new ManejarCliente();
+        aux2.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_agregarActionPerformed
 
@@ -195,23 +207,53 @@ public class AgregarCliente extends javax.swing.JFrame {
         }
             //Validación de números
         
-        this.clienModi.setCi(Integer.parseInt(this.campo1.getText()));
-        this.clienModi.setNomape(this.campo2.getText()+"%"+this.campo3.getText());
+            //Verificar si no existe cliente con esa cédula
+        int ci = Integer.parseInt(this.campo1.getText());
+        if(VenInicio.BusBin(ci, VenInicio.indClien) != -1){
+            JOptionPane.showMessageDialog(this, "¡Ya existe cliente con esa cédula!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         
         try {
+            String nomape = this.campo2.getText() +"%"+ this.campo3.getText();
+            Cliente c = RandomAccessCliente.buscarReg(this.in.getNumReg());
+            c.setCi(ci);
+            c.setNomape(nomape);
             
-            RandomAccessCliente.eliminarReg(this.clienModi.getPosReg());
+            Object[] aux = VenInicio.indClien.toArray();
+            int tope = 0, fondo = aux.length-1;
+            int med = (tope+fondo)/2;
             
-            this.clienModi.setPosReg(VenInicio.clientes.size());
-            RandomAccessCliente.ingresarReg(this.clienModi);
-            VenInicio.clientes.add(this.clienModi);
+                //Buscando en el índice el que reemplazar
+            while(((Indice)aux[med]).getClave() != this.in.getClave()){
+                if(this.in.getClave() > ((Indice)aux[med]).getClave()){
+                    tope = med+1;
+                    if(((Indice)aux[med]).getClave() == this.in.getClave()){
+                        break;
+                    }
+                }else{
+                    fondo = med-1;
+                    if(((Indice)aux[med]).getClave() == this.in.getClave()){
+                        break;
+                   }
+                }
+                med = (tope+fondo)/2;
+            }
+            
+                //Se actualiza el índice
+            this.in.setClave(ci);
+            VenInicio.indClien.remove(med);
+            VenInicio.indClien.add(med,this.in);
+            
+            RandomAccessCliente.ingresarReg(c,this.in.getNumReg());
             
             
         } catch (IOException ex) {
             Logger.getLogger(AgregarCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        VenInicio.ordenarClien();
+        
+        
         
             //Salir
         ManejarCliente aux = new ManejarCliente();

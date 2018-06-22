@@ -1,6 +1,7 @@
 package Interfaz;
 
 import Accesos.Cliente;
+import Accesos.Indice;
 import Controladores.RandomAccessCliente;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -9,7 +10,7 @@ import javax.swing.JOptionPane;
 
 public class ManejarCliente extends javax.swing.JFrame {
 
-    private Cliente clienModi;
+    private Indice clienModi;
     
     public ManejarCliente() {
         initComponents();
@@ -123,11 +124,31 @@ public class ManejarCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
-        try {
-            RandomAccessCliente.eliminarReg(clienModi.getPosReg());
-        } catch (IOException ex) {
-            Logger.getLogger(ManejarCliente.class.getName()).log(Level.SEVERE, null, ex);
+        
+        this.clienModi.setNumReg(-1);
+        
+        Object[] aux = VenInicio.indClien.toArray();
+        int tope = 0, fondo = aux.length-1;
+        int med = (tope+fondo)/2;
+        
+        while(((Indice)aux[med]).getClave() != this.clienModi.getClave()){
+            if(this.clienModi.getClave() > ((Indice)aux[med]).getClave()){
+                tope = med+1;
+                if(((Indice)aux[med]).getClave() == this.clienModi.getClave()){
+                    break;
+                }
+            }else{
+                fondo = med-1;
+                if(((Indice)aux[med]).getClave() == this.clienModi.getClave()){
+                    break;
+                }
+            }
+            med = (tope+fondo)/2;
         }
+        
+        VenInicio.indClien.remove(med);
+        VenInicio.indClien.add(med, this.clienModi);
+        
         this.eliminar.setVisible(false);
         this.modificar.setVisible(false);
         this.texto2.setText("CI:");
@@ -154,7 +175,7 @@ public class ManejarCliente extends javax.swing.JFrame {
         int ci = Integer.parseInt(this.campoCi.getText());
         
             //Buscar si existe el cliente
-        int aux = VenInicio.BusBinCi(ci);
+        int aux = VenInicio.BusBin(ci,VenInicio.indClien);
         if(aux == -1){
             JOptionPane.showMessageDialog(this, "¡No hay cliente que posea esa cédula!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
@@ -162,12 +183,10 @@ public class ManejarCliente extends javax.swing.JFrame {
             //Extrar los datos del archivo
         try {
             
-            Cliente c = RandomAccessCliente.buscarReg(aux);
+            Indice in = VenInicio.indClienAcc.buscarReg(aux);
+            this.clienModi = in;
             
-            if(!c.registroIsDisponible()){
-                JOptionPane.showMessageDialog(this, "¡No hay cliente que posea esa cédula!", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
+            Cliente c = RandomAccessCliente.buscarReg(in.getNumReg());
             
             String auxNom = "", auxApe = "";
             char[] aux2 = c.getNomape().toCharArray();
@@ -185,11 +204,10 @@ public class ManejarCliente extends javax.swing.JFrame {
             }
             
             this.texto2.setText("CI: "+c.getCi());
-            this.texto3.setText("Nombre y Apellido: "+auxApe+" "+auxNom);
+            this.texto3.setText("Nombre y Apellido: "+auxNom+" "+auxApe);
             this.texto4.setText("Película alquilada: "+c.getPelicula());
             this.texto5.setText("Fecha de Alquiler: "+c.getFechaAlq());
             this.texto6.setText("Fecha máxima de Devolución: "+c.getFechaDevol());
-            this.clienModi = c;
             
         } catch (IOException ex) {
             Logger.getLogger(ManejarCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -210,9 +228,14 @@ public class ManejarCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_campoCiActionPerformed
 
     private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
-        AgregarCliente aux = new AgregarCliente(this.clienModi);
-        aux.setVisible(true);
-        this.dispose();
+        AgregarCliente aux;
+        try {
+            aux = new AgregarCliente(this.clienModi);
+            aux.setVisible(true);
+            this.dispose();
+        } catch (IOException ex) {
+            Logger.getLogger(ManejarCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_modificarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

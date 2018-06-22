@@ -4,34 +4,14 @@ public class Pelicula {
     private int stock, rating=0;
     private String titulo, genero, descripcion;
     private long precioDia;
-    private int RegPos;
-    private boolean disponible;
     
-    public Pelicula(boolean disponible ,String titulo, long precio, int rating, String genero, int stock, String descripcion, int RegPos){
-        this.disponible = disponible;
+    public Pelicula(String titulo, long precio, int rating, String genero, int stock, String descripcion){
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.genero = genero;
         this.precioDia = precio;
         this.stock = stock;
         this.rating = rating;
-        this.RegPos = RegPos;
-    }
-
-    public boolean registroIsDisponible(){
-        return this.disponible;
-    }
-    
-    public void setRegDisponible(boolean disponible){
-        this.disponible = disponible;
-    }
-    
-    public int getRegPos() {
-        return this.RegPos;
-    }
-
-    public void setRegPos(int RegPos) {
-        this.RegPos = RegPos;
     }
     
     public void setStock(int stock) {

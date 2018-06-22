@@ -1,8 +1,10 @@
 package Interfaz;
 
 import Accesos.Cliente;
+import Accesos.Indice;
 import Accesos.Pelicula;
 import Controladores.RandomAccessCliente;
+import Controladores.RandomAccessIndex;
 import Controladores.RandomAccessPelicula;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,78 +17,74 @@ import java.util.logging.Logger;
 
 public class VenInicio extends javax.swing.JFrame {
 
-    protected static LinkedList clientes = new LinkedList();
-    protected static LinkedList peliculas = new LinkedList();
+    protected static LinkedList indClien = new LinkedList();
+    protected static RandomAccessIndex indClienAcc = new RandomAccessIndex();
+    protected static LinkedList indPrimPeli = new LinkedList();
+    protected static RandomAccessIndex indPrimPeliAcc = new RandomAccessIndex();
+    protected static LinkedList indSecGenPeli;
         
     public VenInicio() {
         initComponents();
         this.setLocationRelativeTo(null);
     }
     
-        //Ordenar los clientes por su clave principal
-    public static void ordenarClien(){
-        
-        Object[] clientes = VenInicio.clientes.toArray();
-        VenInicio.clientes.clear();
+    public static Object[] ordenarClavesString(LinkedList l){
+        Object[] arreglo = l.toArray();
+        l.clear();
         
             //Ordenar por cédulas en la estructura auxiliar
-        for(int i=0; i<clientes.length-1;i++){
-            if(clientes[i] != null){
-                int menor = ((Cliente)clientes[i]).getCi();
+        for(int i=0; i<arreglo.length-1;i++){
+                String menor = ((Indice)arreglo[i]).getClave2();
                 int posMenor = i;
                 Object aux;
-                for(int j=i+1;j<clientes.length;j++){
-                    if(menor > ((Cliente)clientes[j]).getCi()){
+                for(int j=i+1;j<arreglo.length;j++){
+                    if(menor.compareTo(((Indice)(arreglo[j])).getClave2()) > 0){
                         posMenor = j;
-                        menor = ((Cliente)clientes[j]).getCi();
+                        menor = ((Indice)arreglo[j]).getClave2();
                     }
-                }
-                aux = clientes[i];
-                clientes[i] = clientes[posMenor];
-                clientes[posMenor] = aux;
+                aux = arreglo[i];
+                arreglo[i] = arreglo[posMenor];
+                arreglo[posMenor] = aux;
             }
         }
         
-            //Llenar la estructura con datos organizados
-        for(int i=0;i<clientes.length;i++){
-            VenInicio.clientes.addLast(clientes[i]);
-        }
+        return arreglo;
     }
     
-        //Ordenar clave primaria películas
-    public static void ordenarPeli(){
-        Object[] aux = VenInicio.peliculas.toArray();
-        VenInicio.peliculas.clear();
+    public static Object[] ordenarClaves(LinkedList l){
         
-            //Ordenar la estructura
-        for(int i=0;i<aux.length-1;i++){
-            int posMenor = i;
-            Object aux2 = aux[i];
-            for(int j=i;j<aux.length;j++){
-                if(((Pelicula)aux[posMenor]).getTitulo().compareTo(((Pelicula)aux[j]).getTitulo()) >= 0){
-                   posMenor = j;
-                }
+        Object[] arreglo = l.toArray();
+        l.clear();
+        
+            //Ordenar por cédulas en la estructura auxiliar
+        for(int i=0; i<arreglo.length-1;i++){
+                int menor = ((Indice)arreglo[i]).getClave();
+                int posMenor = i;
+                Object aux;
+                for(int j=i+1;j<arreglo.length;j++){
+                    if(menor > ((Indice)arreglo[j]).getClave()){
+                        posMenor = j;
+                        menor = ((Indice)arreglo[j]).getClave();
+                    }
+                aux = arreglo[i];
+                arreglo[i] = arreglo[posMenor];
+                arreglo[posMenor] = aux;
             }
-            aux2 = aux[i];
-            aux[i] = aux[posMenor];
-            aux[posMenor] = aux2;
         }
         
-            //Estructura ordenada
-        for(int i=0;i<aux.length;i++){
-            VenInicio.peliculas.addLast(aux[i]);
-        }
+        return arreglo;
+        
     }
     
         //Búsqueda binaria de película
-    public static int BusBinTit(String buscando){
-        Object[] arreglo = VenInicio.peliculas.toArray();
+    public static int BusBin(int clave, LinkedList l){
+        Object[] arreglo =  l.toArray();
         int tope = 0;
         int fondo = arreglo.length-1;
         int med = (tope+fondo)/2;
         
-        while((tope<=fondo) && !((Pelicula)arreglo[med]).getTitulo().equals(buscando)){
-            if(buscando.compareTo(((Pelicula)arreglo[med]).getTitulo())>=0){
+        while((tope<=fondo) && clave != ((Indice)arreglo[med]).getClave()){
+            if(clave > ((Indice)arreglo[med]).getClave()){
                 tope = med+1;
                 med = (fondo+tope)/2;
             }else{
@@ -97,30 +95,30 @@ public class VenInicio extends javax.swing.JFrame {
         if(tope>fondo){
             return -1;
         }else{
-            return ((Pelicula)arreglo[med]).getRegPos();
+            return ((Indice)arreglo[med]).getNumReg();
         }
     }
-        //Búsqueda binaria por cédula
-    public static int BusBinCi(int buscando){
-        Object[] arreglo = VenInicio.clientes.toArray();
+    
+        //Búsqueda binaria de película
+    public static int BusBinString(String clave, LinkedList l){
+        Object[] arreglo = l.toArray();
         int tope = 0;
         int fondo = arreglo.length-1;
         int med = (tope+fondo)/2;
         
-        while((tope <= fondo) && ((Cliente)arreglo[med]).getCi() != buscando){
-            if(buscando >= ((Cliente)arreglo[med]).getCi()){
+        while((tope<=fondo) && !clave.equals(((Indice)arreglo[med]).getClave2())){
+            if(clave.compareTo(((Indice)arreglo[med]).getClave2()) > 0){
                 tope = med+1;
-                med = (tope+fondo)/2;
+                med = (fondo+tope)/2;
             }else{
                 fondo = med-1;
-                med = (tope+fondo)/2;
+                med = (fondo+tope)/2;
             }
         }
-        
-        if(tope > fondo){
-            return -1; //No se encontró nada
+        if(tope>fondo){
+            return -1;
         }else{
-            return ((Cliente)arreglo[med]).getPosReg();
+            return ((Indice)arreglo[med]).getNumReg();
         }
     }
     
@@ -174,6 +172,8 @@ public class VenInicio extends javax.swing.JFrame {
         try {
             RandomAccessCliente.cerrarFlujo();
             RandomAccessPelicula.cerrarFlujo();
+            VenInicio.indClienAcc.RespaldoFinalInt(VenInicio.indClien);
+            VenInicio.indPrimPeliAcc.RespaldoFinalString(VenInicio.indPrimPeli);
         } catch (IOException ex) {
             Logger.getLogger(VenInicio.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -197,33 +197,34 @@ public class VenInicio extends javax.swing.JFrame {
         
         File f = new File("Clientes.txt");
         File f2 = new File("Peliculas.txt");
+        File f3 = new File("Llaves_Cliente.txt");
+        File f4 = new File("Llaves_Principales_Peliculas.txt");
         
-        if(f.exists()){
-            RandomAccessCliente.crearFlujo(f);
-            Cliente[] auxp = RandomAccessCliente.ExtraerAllReg();
-            
-            for(int i=0;i<auxp.length;i++){
-                VenInicio.clientes.add(auxp[i]);
+        RandomAccessCliente.crearFlujo(f);
+        RandomAccessPelicula.crearFlujo(f2);
+        
+        if(f3.exists()){
+            VenInicio.indClienAcc.crearFlujo(f3);
+                //Cargar el respaldo clave de clientes
+            Indice[] aux = VenInicio.indClienAcc.ExtraerAllRegInt();
+            for(int i=0;i<aux.length;i++){
+                VenInicio.indClien.addLast(aux[i]);
             }
             
-            VenInicio.ordenarClien();
-            
         }else{
-            RandomAccessCliente.crearFlujo(f);
+            VenInicio.indClienAcc.crearFlujo(f3);
         }
         
-        if(f2.exists()){
-            RandomAccessPelicula.crearFlujo(f2);
-            Pelicula[] auxp = RandomAccessPelicula.ExtraerAllReg();
-            
-            for(int i=0;i<auxp.length;i++){
-                VenInicio.peliculas.add(auxp[i]);
+        if(f4.exists()){
+            VenInicio.indPrimPeliAcc.crearFlujo(f4);
+                //Cargar el respaldo clave primaria de películas
+            Indice[] aux = VenInicio.indPrimPeliAcc.ExtraerAllRegString();
+            for(int i=0;i<aux.length;i++){
+                VenInicio.indPrimPeli.addLast(aux[i]);
             }
             
-            VenInicio.ordenarPeli();
-            
         }else{
-            RandomAccessPelicula.crearFlujo(f2);
+            VenInicio.indPrimPeliAcc.crearFlujo(f4);
         }
         
         

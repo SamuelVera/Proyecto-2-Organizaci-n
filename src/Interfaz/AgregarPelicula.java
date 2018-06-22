@@ -1,5 +1,6 @@
 package Interfaz;
 
+import Accesos.Indice;
 import Accesos.Pelicula;
 import Controladores.RandomAccessPelicula;
 import java.io.IOException;
@@ -127,24 +128,31 @@ public class AgregarPelicula extends javax.swing.JFrame {
         }
         
             //Verificar si hay una película por el mismo título
-        if(VenInicio.BusBinTit(this.campo1.getText()) != -1){
+        if(VenInicio.BusBinString(this.campo1.getText(),VenInicio.indPrimPeli) != -1){
             JOptionPane.showMessageDialog(this, "¡Ya hay película por este nombre!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
             //Preparar datos para ingresar
-        Pelicula p = new Pelicula(true,this.campo1.getText(), Long.parseLong(this.campo4.getText()), 0, this.campo2.getText(), Integer.parseInt(this.campo6.getText()), this.campo3.getText(), VenInicio.peliculas.size());
-        
+        Pelicula p = new Pelicula(this.campo1.getText(), Long.parseLong(this.campo4.getText()), 0, this.campo2.getText(), Integer.parseInt(this.campo6.getText()), this.campo3.getText());
+        Indice in = new Indice(p.getTitulo(), RandomAccessPelicula.getRegNum());
         
         try {
             RandomAccessPelicula.ingresarReg(p);
+            VenInicio.indPrimPeliAcc.ingresarRegString(in,in.getNumReg());
         } catch (IOException ex) {
             Logger.getLogger(AgregarPelicula.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-            //Agregar a la estructura auxiliar
-        VenInicio.peliculas.add(p);
-        VenInicio.ordenarPeli();
+            //Agregar y ordenar a la estructura auxiliar
+        VenInicio.indPrimPeli.addLast(in);
+        Object[] aux = VenInicio.ordenarClavesString(VenInicio.indPrimPeli);
+        VenInicio.indPrimPeli.clear();
         
+            //Recargar la estructura auxiliar ordenada
+        for(int i=0;i<aux.length;i++){
+            VenInicio.indPrimPeli.addLast(aux[i]);
+        }
+            
         ManejarPelicula aux3 = new ManejarPelicula();
         aux3.setVisible(true);
         this.dispose();

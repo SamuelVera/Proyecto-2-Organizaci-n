@@ -2,11 +2,9 @@ package Controladores;
 
     //Imports I/O
 import Accesos.Cliente;
-import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.LinkedList;
 
 public class RandomAccessCliente {
     
@@ -28,27 +26,32 @@ public class RandomAccessCliente {
         flujo.close();
     }
     
-        //Colocar condición para inhabilitar registro
-    public static void eliminarReg(int posElim) throws IOException{
-        flujo.seek(RegTam*posElim);
-        Cliente c = buscarReg(posElim);
-        c.setRegistroIsDisponible(false);
-        ingresarReg(c);
+    public static int getRegNum(){
+        return RegNum;
     }
-    
     
         //Añadir nuevo registro con datos
     public static void ingresarReg(Cliente c) throws IOException{
             //Posición del archivo
-        flujo.seek(RegTam*c.getPosReg());
+        flujo.seek(RegTam*RegNum);
             //Escribir en la posición
-        flujo.writeBoolean(c.registroIsDisponible());
         flujo.writeInt(c.getCi());
         flujo.writeUTF(c.getNomape());
         flujo.writeLong(c.getFechaAlq());
         flujo.writeUTF(c.getPelicula());
         flujo.writeLong(c.getFechaDevol());
-        flujo.writeInt(c.getPosReg());
+        RegNum++;
+    }
+    
+    public static void ingresarReg(Cliente c, int pos) throws IOException{
+            //Posición del archivo
+        flujo.seek(RegTam*pos);
+            //Escribir en la posición
+        flujo.writeInt(c.getCi());
+        flujo.writeUTF(c.getNomape());
+        flujo.writeLong(c.getFechaAlq());
+        flujo.writeUTF(c.getPelicula());
+        flujo.writeLong(c.getFechaDevol());
         RegNum++;
     }
     
@@ -56,16 +59,7 @@ public class RandomAccessCliente {
     public static Cliente buscarReg(int posReg) throws IOException{
         long pos = posReg*RegTam;
         flujo.seek(pos);
-        return new Cliente(flujo.readBoolean(),flujo.readInt(),flujo.readUTF(),flujo.readLong(),flujo.readUTF(),flujo.readLong(),flujo.readInt());
+        return new Cliente(flujo.readInt(),flujo.readUTF(),flujo.readLong(),flujo.readUTF(),flujo.readLong());
     }
-    
-        //Extraer toda la información de los registros
-    public static Cliente[] ExtraerAllReg() throws IOException{
-        Cliente[] aux = new Cliente[RegNum];
-        for(int i=0;i<aux.length;i++){
-            flujo.seek(i*RegTam);
-            aux[i] = new Cliente(flujo.readBoolean(),flujo.readInt(),flujo.readUTF(),flujo.readLong(),flujo.readUTF(),flujo.readLong(),flujo.readInt());
-        }
-        return aux;
-    }
+
 }

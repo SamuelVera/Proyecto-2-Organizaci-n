@@ -7,29 +7,13 @@ public class Cliente {
     private int ci;
     private String pelicula, nomape;
     private Date fechaAlq, fechaDevol;
-    private int posReg;
-    private boolean disponible;
     
-    public Cliente(boolean dispon, int ci, String nomape, long fechaAlq, String pelicula, long fechaDevol, int posReg){
-        this.disponible = dispon;
+    public Cliente(int ci, String nomape, long fechaAlq, String pelicula, long fechaDevol){
         this.ci = ci;
         this.nomape = nomape;
         this.pelicula = pelicula;
         this.fechaAlq = new Date(fechaAlq*1000);
         this.fechaDevol = new Date(fechaDevol*1000);
-        this.posReg = posReg;
-    }
-    
-    public void setRegistroIsDisponible(boolean disponible){
-        this.disponible = disponible;
-    }
-    
-    public boolean registroIsDisponible(){
-        return this.disponible;
-    }
-    
-    public int getPosReg() {
-        return this.posReg;
     }
 
     public void setCi(int ci){
@@ -38,10 +22,6 @@ public class Cliente {
     
     public void setNomape(String nomape){
         this.nomape = nomape;
-    }
-    
-    public void setPosReg(int posReg) {
-        this.posReg = posReg;
     }
         
     public int getCi() {
