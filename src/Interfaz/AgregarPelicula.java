@@ -159,7 +159,7 @@ public class AgregarPelicula extends javax.swing.JFrame {
             return;
         }
             //Preparar datos para ingresar
-        Pelicula p = new Pelicula(this.campo1.getText(), Long.parseLong(this.campo4.getText()), 0, this.campo2.getText(), Integer.parseInt(this.campo6.getText()), this.campo3.getText());
+        Pelicula p = new Pelicula(this.campo1.getText(), Long.parseLong(this.campo4.getText()), 0, this.campo2.getText(), Integer.parseInt(this.campo6.getText()), this.campo3.getText(), 0, "");
         Indice in = new Indice(p.getTitulo(), RandomAccessPelicula.getRegNum());
         
         try {

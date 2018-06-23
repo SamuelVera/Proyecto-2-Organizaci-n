@@ -2,7 +2,9 @@ package Interfaz;
 
 import Accesos.Cliente;
 import Accesos.Indice;
+import Accesos.Pelicula;
 import Controladores.RandomAccessCliente;
+import Controladores.RandomAccessPelicula;
 import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
@@ -128,6 +130,11 @@ public class ManejarCliente extends javax.swing.JFrame {
 
         devolver.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         devolver.setText("Devolver Película");
+        devolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                devolverActionPerformed(evt);
+            }
+        });
         getContentPane().add(devolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 270, 150, 20));
         getContentPane().add(texto7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
 
@@ -135,6 +142,28 @@ public class ManejarCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
+        
+        try {
+            Cliente c = RandomAccessCliente.buscarReg(this.clienModi.getNumReg());
+            
+            if(!"0".equals(c.getPelicula())){
+                int aux = VenInicio.BusBinString(c.getPelicula(), VenInicio.indPrimPeli);
+                
+                if(aux != -1){
+                    Pelicula p = RandomAccessPelicula.buscarReg(aux);
+                    if(p.getStock() == 0){
+                        p.setUltimo("");
+                        p.setFechaUlt(0);
+                    }
+                    p.setStock(p.getStock() + 1);
+                    RandomAccessPelicula.ingresarReg(p,aux);
+                }
+                
+            }
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ManejarCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         this.clienModi.setNumReg(-1);
         
@@ -167,6 +196,8 @@ public class ManejarCliente extends javax.swing.JFrame {
         this.texto4.setText("Película alquilada: ");
         this.texto5.setText("Fecha de alquiler: ");
         this.texto6.setText("Fecha máxima de devolución: ");
+        
+        
     }//GEN-LAST:event_eliminarActionPerformed
 
     private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed
@@ -266,6 +297,32 @@ public class ManejarCliente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "INGRESAR SOLO NÚMEROS","    ¡¡ERROR!!",JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_campoCiKeyTyped
+
+    private void devolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_devolverActionPerformed
+        try {
+            Cliente c = RandomAccessCliente.buscarReg(this.clienModi.getNumReg());
+            int aux = VenInicio.BusBinString(c.getPelicula(), VenInicio.indPrimPeli);
+            if(aux != -1){
+                Pelicula p = RandomAccessPelicula.buscarReg(aux);
+                if(p.getStock() == 0){
+                    p.setUltimo("");
+                    p.setFechaUlt(0);
+                }
+                p.setStock(p.getStock() + 1);
+                RandomAccessPelicula.ingresarReg(p,aux);
+            }
+            c.setFechaAlq(0);
+            c.setFechaVenc(0);
+            c.setPelicula("0");
+            
+            this.texto4.setText("Película Alquilada: ");
+            this.texto5.setText("Fecha de alquiler: NA");
+            this.texto6.setText("Fecha de devolución: NA");
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ManejarCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_devolverActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonBuscar;

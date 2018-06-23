@@ -2,7 +2,9 @@ package Interfaz;
 
 import Accesos.Cliente;
 import Accesos.Indice;
+import Accesos.Pelicula;
 import Controladores.RandomAccessCliente;
+import Controladores.RandomAccessPelicula;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -257,6 +259,12 @@ public class AgregarCliente extends javax.swing.JFrame {
             
             RandomAccessCliente.ingresarReg(c,this.in.getNumReg());
             
+            if(!"0".equals(c.getPelicula())){
+                int aux2 = VenInicio.BusBinString(c.getPelicula(), VenInicio.indPrimPeli);
+                Pelicula p = RandomAccessPelicula.buscarReg(aux2);
+                p.setUltimo(nomape);
+                RandomAccessPelicula.ingresarReg(p,aux2);
+            }
             
         } catch (IOException ex) {
             Logger.getLogger(AgregarCliente.class.getName()).log(Level.SEVERE, null, ex);

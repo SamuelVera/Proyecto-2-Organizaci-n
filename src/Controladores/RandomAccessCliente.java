@@ -52,7 +52,6 @@ public class RandomAccessCliente {
         flujo.writeLong(c.getFechaAlq());
         flujo.writeUTF(c.getPelicula());
         flujo.writeLong(c.getFechaDevol());
-        RegNum++;
     }
     
         //Extraer toda la información del registro

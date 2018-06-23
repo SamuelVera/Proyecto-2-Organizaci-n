@@ -41,7 +41,8 @@ public class RandomAccessPelicula {
         flujo.writeUTF(p.getGenero());
         flujo.writeInt(p.getStock());
         flujo.writeUTF(p.getDescripcion());
-        
+        flujo.writeLong(p.getFechaUlt());
+        flujo.writeUTF(p.getUltimo());
         RegNum++;
     }
     
@@ -56,15 +57,16 @@ public class RandomAccessPelicula {
         flujo.writeUTF(p.getGenero());
         flujo.writeInt(p.getStock());
         flujo.writeUTF(p.getDescripcion());
+        flujo.writeLong(p.getFechaUlt());
+        flujo.writeUTF(p.getUltimo());
         
-        RegNum++;
     }
     
         //Retrar toda la información del registro
     public static Pelicula buscarReg(int posReg) throws IOException{
         long pos = RegTam*posReg;
         flujo.seek(pos);
-        return new Pelicula(flujo.readUTF(), flujo.readLong(), flujo.readInt(), flujo.readUTF(), flujo.readInt(), flujo.readUTF());
+        return new Pelicula(flujo.readUTF(), flujo.readLong(), flujo.readInt(), flujo.readUTF(), flujo.readInt(), flujo.readUTF(), flujo.readLong(), flujo.readUTF());
     }
     
 }

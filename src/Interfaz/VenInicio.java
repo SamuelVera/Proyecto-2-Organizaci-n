@@ -22,6 +22,9 @@ public class VenInicio extends javax.swing.JFrame {
     protected static LinkedList indPrimPeli = new LinkedList();
     protected static RandomAccessIndex indPrimPeliAcc = new RandomAccessIndex();
     protected static LinkedList indSecGenPeli;
+    protected static RandomAccessIndex indSecGenPeliAcc = new RandomAccessIndex();
+    protected static LinkedList indSecRatPeli;
+    protected static RandomAccessIndex indSecRatPeliAcc = new RandomAccessIndex();
         
     public VenInicio() {
         initComponents();
@@ -199,6 +202,9 @@ public class VenInicio extends javax.swing.JFrame {
         File f2 = new File("Peliculas.txt");
         File f3 = new File("Llaves_Cliente.txt");
         File f4 = new File("Llaves_Principales_Peliculas.txt");
+        File f5 = new File("LLaves_Sec_Género_Películas.txt");
+        File f6 = new File("LLaves_Sec_Rating_Películas.txt");
+
         
         RandomAccessCliente.crearFlujo(f);
         RandomAccessPelicula.crearFlujo(f2);
@@ -225,6 +231,22 @@ public class VenInicio extends javax.swing.JFrame {
             
         }else{
             VenInicio.indPrimPeliAcc.crearFlujo(f4);
+        }
+        
+        if(f5.exists()){
+            VenInicio.indSecGenPeliAcc.crearFlujo(f5);
+                //Cargar respaldo de la clave secundaria género
+                
+        }else{
+            VenInicio.indSecGenPeliAcc.crearFlujo(f5);
+        }
+        
+        if(f6.exists()){
+            VenInicio.indSecRatPeliAcc.crearFlujo(f6);
+            //Cargar respaldo de la clave secundaria rating
+            
+        }else{
+            VenInicio.indSecRatPeliAcc.crearFlujo(f6);
         }
         
         

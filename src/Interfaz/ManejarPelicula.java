@@ -124,7 +124,7 @@ public class ManejarPelicula extends javax.swing.JFrame {
 
         res4.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         res4.setText("Precio de alquiler: ");
-        getContentPane().add(res4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 430, 30));
+        getContentPane().add(res4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 270, 30));
 
         res3.setEditable(false);
         res3.setColumns(20);
@@ -155,11 +155,11 @@ public class ManejarPelicula extends javax.swing.JFrame {
 
         res6.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         res6.setText("Rating: ");
-        getContentPane().add(res6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 150, 30));
+        getContentPane().add(res6, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 330, 150, 30));
 
         res5.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         res5.setText("Stock: ");
-        getContentPane().add(res5, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 360, 290, 30));
+        getContentPane().add(res5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 430, 30));
 
         comprar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         comprar.setText("Alquilar Película");
@@ -223,7 +223,26 @@ public class ManejarPelicula extends javax.swing.JFrame {
             this.res2.setText("Género: "+p.getGenero());
             this.res3.setText("Descripción: "+p.getDescripcion());
             this.res4.setText("Precio de Alquiler: "+p.getPrecioDia()+" Bs/Día");
-            this.res5.setText("Stock: "+p.getStock()+" Unidades");
+            if(p.getStock() == 0){
+                String auxNom = "", auxApe = "";
+                char[] aux2 = p.getUltimo().toCharArray();
+                int j=0;
+                for(int i=0;i<aux2.length;i++){
+                    if(aux2[i]==37){
+                        j++;
+                    }else{
+                        if(j==0){
+                            auxNom = auxNom+aux2[i];
+                        }else{
+                            auxApe = auxApe+aux2[i];
+                        }
+                    }
+                }
+                Date s1 = new Date(p.getFechaUlt());
+                this.res5.setText("Stock: 0, Último cliente en alquilar: "+auxNom+" "+auxApe+" Fecha de devolución: "+s1.toString());
+            }else{
+                this.res5.setText("Stock: "+p.getStock()+" Unidades");
+            }
             this.res6.setText("Rating: "+p.getRating());
         } catch (IOException ex) {
             Logger.getLogger(ManejarPelicula.class.getName()).log(Level.SEVERE, null, ex);
@@ -264,11 +283,11 @@ public class ManejarPelicula extends javax.swing.JFrame {
         VenInicio.indPrimPeli.add(med, this.peliModi);
         
         this.res1.setText("Título: ");
-            this.res2.setText("Género: ");
-            this.res3.setText("Descripción: ");
-            this.res4.setText("Precio de Alquiler: ");
-            this.res5.setText("Stock: ");
-            this.res6.setText("Rating: ");
+        this.res2.setText("Género: ");
+        this.res3.setText("Descripción: ");
+        this.res4.setText("Precio de Alquiler: ");
+        this.res5.setText("Stock: ");
+        this.res6.setText("Rating: ");
     }//GEN-LAST:event_eliminarActionPerformed
 
     private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
@@ -343,8 +362,28 @@ public class ManejarPelicula extends javax.swing.JFrame {
             
                 //Actualización de stock
             p.setStock(p.getStock()-1);
-            this.res5.setText("Stock: "+p.getStock()+" Unidades");
-            
+            if(p.getStock() == 0){
+                p.setUltimo(c.getNomape());
+                p.setFechaUlt(c.getFechaDevol());
+                String auxNom = "", auxApe = "";
+                char[] aux2 = c.getNomape().toCharArray();
+                int j=0;
+                for(int i=0;i<aux2.length;i++){
+                    if(aux2[i]==37){
+                        j++;
+                    }else{
+                        if(j==0){
+                            auxNom = auxNom+aux2[i];
+                        }else{
+                            auxApe = auxApe+aux2[i];
+                        }
+                    }
+                }
+                Date s1 = new Date(p.getFechaUlt());
+                this.res5.setText("Stock: 0, Último cliente en alquilar: "+auxNom+" "+auxApe+" Fecha de devolución: "+s1.toString());
+            }else{
+                this.res5.setText("Stock: "+p.getStock()+" Unidades");
+            }
                 //Actualización de los archivos
             RandomAccessCliente.ingresarReg(c, aux);
             RandomAccessPelicula.ingresarReg(p, this.peliModi.getNumReg());
