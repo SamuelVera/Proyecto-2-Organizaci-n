@@ -1,10 +1,13 @@
 package Accesos;
 
+import java.util.LinkedList;
+
 public class Indice {
     private int numReg;
-    private String apunta;
+    private LinkedList apunta;
     private int clave;
     private String clave2;
+    
     
         //Clave principal de cliente
     public Indice(int clave, String dispose, int numReg){
@@ -19,17 +22,25 @@ public class Indice {
     }
     
         //Clave secundaria género
-    public Indice(String clave, int dispose, String apunta){
-        this.apunta = apunta;
-        this.clave2 = clave;
+    public Indice(String s, LinkedList l){
+        this.clave2 = s;
+        this.apunta = l;
     }
     
         //Clave secundaria rating
-    public Indice(int clave, String apunta){
-        this.apunta = apunta;
-        this.clave = clave;
+    public Indice(int r, LinkedList l){
+        this.clave = r;
+        this.apunta = l;
     }
 
+    public LinkedList getApunta(){
+        return this.apunta;
+    }
+    
+    public void AddLast(String titulo){
+        this.apunta.addLast(titulo);
+    }
+    
     public void setNumReg(int numReg){
         this.numReg = numReg;
     }

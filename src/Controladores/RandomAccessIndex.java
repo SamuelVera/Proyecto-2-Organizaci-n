@@ -49,8 +49,8 @@ public class RandomAccessIndex {
     
     public void ingresarRegString(Indice i, int NumReg) throws IOException{
         this.flujo.seek(i.getNumReg()*this.RegTam);
-            this.flujo.writeUTF(i.getClave2());
-            this.flujo.writeInt(NumReg);
+        this.flujo.writeUTF(i.getClave2());
+        this.flujo.writeInt(NumReg);
     }
     
         //Respaldar al finalizar la ejecución

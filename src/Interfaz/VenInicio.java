@@ -21,10 +21,8 @@ public class VenInicio extends javax.swing.JFrame {
     protected static RandomAccessIndex indClienAcc = new RandomAccessIndex();
     protected static LinkedList indPrimPeli = new LinkedList();
     protected static RandomAccessIndex indPrimPeliAcc = new RandomAccessIndex();
-    protected static LinkedList indSecGenPeli;
-    protected static RandomAccessIndex indSecGenPeliAcc = new RandomAccessIndex();
-    protected static LinkedList indSecRatPeli;
-    protected static RandomAccessIndex indSecRatPeliAcc = new RandomAccessIndex();
+    protected static LinkedList indSecGenPeli = new LinkedList();
+    protected static LinkedList indSecRatPeli = new LinkedList();
         
     public VenInicio() {
         initComponents();
@@ -202,8 +200,6 @@ public class VenInicio extends javax.swing.JFrame {
         File f2 = new File("Peliculas.txt");
         File f3 = new File("Llaves_Cliente.txt");
         File f4 = new File("Llaves_Principales_Peliculas.txt");
-        File f5 = new File("LLaves_Sec_Género_Películas.txt");
-        File f6 = new File("LLaves_Sec_Rating_Películas.txt");
 
         
         RandomAccessCliente.crearFlujo(f);
@@ -225,30 +221,89 @@ public class VenInicio extends javax.swing.JFrame {
             VenInicio.indPrimPeliAcc.crearFlujo(f4);
                 //Cargar el respaldo clave primaria de películas
             Indice[] aux = VenInicio.indPrimPeliAcc.ExtraerAllRegString();
+            
+            LinkedList g1 = new LinkedList();
+            LinkedList g2 = new LinkedList();
+            LinkedList g3 = new LinkedList();
+            LinkedList g4 = new LinkedList();
+            LinkedList g5 = new LinkedList();
+            LinkedList g6 = new LinkedList();
+            
+            LinkedList r0 = new LinkedList();
+            LinkedList r1 = new LinkedList();
+            LinkedList r2 = new LinkedList();
+            LinkedList r3 = new LinkedList();
+            LinkedList r4 = new LinkedList();
+            LinkedList r5 = new LinkedList();
+            
+            Pelicula p;
             for(int i=0;i<aux.length;i++){
+                
+                if(aux[i].getNumReg() != -1){
+                    p = RandomAccessPelicula.buscarReg(aux[i].getNumReg());
+                
+                    if(p.getRating() == 0){
+                        r0.addLast(p.getTitulo());
+                    }else if(p.getRating() == 1){
+                        r1.addLast(p.getTitulo());
+                    }else if(p.getRating() == 2){
+                        r2.addLast(p.getTitulo());
+                    }else if(p.getRating() == 3){
+                        r3.addLast(p.getTitulo());
+                    }else if(p.getRating() == 4){
+                        r4.addLast(p.getTitulo());
+                    }else if(p.getRating() == 5){
+                        r5.addLast(p.getTitulo());
+                    }
+                
+                    if("Accion".equals(p.getGenero())){
+                        g1.addLast(p.getTitulo());
+                    }else if("Comedia".equals(p.getGenero())){
+                        g2.addLast(p.getTitulo());
+                    }else if("Drama".equals(p.getGenero())){
+                        g3.addLast(p.getTitulo());
+                    }else if("Fantasia".equals(p.getGenero())){
+                        g4.addLast(p.getTitulo());
+                    }else if("Historia".equals(p.getGenero())){
+                        g5.addLast(p.getTitulo());
+                    }else if("Terror".equals(p.getGenero())){
+                        g6.addLast(p.getTitulo());
+                    }
+                }
                 VenInicio.indPrimPeli.addLast(aux[i]);
             }
             
-        }else{
-            VenInicio.indPrimPeliAcc.crearFlujo(f4);
-        }
-        
-        if(f5.exists()){
-            VenInicio.indSecGenPeliAcc.crearFlujo(f5);
-                //Cargar respaldo de la clave secundaria género
-                
-        }else{
-            VenInicio.indSecGenPeliAcc.crearFlujo(f5);
-        }
-        
-        if(f6.exists()){
-            VenInicio.indSecRatPeliAcc.crearFlujo(f6);
-            //Cargar respaldo de la clave secundaria rating
+            VenInicio.indSecGenPeli.addLast(new Indice("accion",g1));
+            VenInicio.indSecGenPeli.addLast(new Indice("comedia",g2));
+            VenInicio.indSecGenPeli.addLast(new Indice("drama",g3));
+            VenInicio.indSecGenPeli.addLast(new Indice("fantasia",g4));
+            VenInicio.indSecGenPeli.addLast(new Indice("historia",g5));
+            VenInicio.indSecGenPeli.addLast(new Indice("terror",g6));
+            
+            VenInicio.indSecRatPeli.addLast(new Indice(0,r0));
+            VenInicio.indSecRatPeli.addLast(new Indice(1,r1));
+            VenInicio.indSecRatPeli.addLast(new Indice(2,r2));
+            VenInicio.indSecRatPeli.addLast(new Indice(3,r3));
+            VenInicio.indSecRatPeli.addLast(new Indice(4,r4));
+            VenInicio.indSecRatPeli.addLast(new Indice(5,r5));
             
         }else{
-            VenInicio.indSecRatPeliAcc.crearFlujo(f6);
+            VenInicio.indSecGenPeli.addLast(new Indice("accion",new LinkedList()));
+            VenInicio.indSecGenPeli.addLast(new Indice("comedia",new LinkedList()));
+            VenInicio.indSecGenPeli.addLast(new Indice("drama",new LinkedList()));
+            VenInicio.indSecGenPeli.addLast(new Indice("fantasia",new LinkedList()));
+            VenInicio.indSecGenPeli.addLast(new Indice("historia",new LinkedList()));
+            VenInicio.indSecGenPeli.addLast(new Indice("terror",new LinkedList()));
+            
+            VenInicio.indSecRatPeli.addLast(new Indice(0,new LinkedList()));
+            VenInicio.indSecRatPeli.addLast(new Indice(1,new LinkedList()));
+            VenInicio.indSecRatPeli.addLast(new Indice(2,new LinkedList()));
+            VenInicio.indSecRatPeli.addLast(new Indice(3,new LinkedList()));
+            VenInicio.indSecRatPeli.addLast(new Indice(4,new LinkedList()));
+            VenInicio.indSecRatPeli.addLast(new Indice(5,new LinkedList()));
+            
+            VenInicio.indPrimPeliAcc.crearFlujo(f4);
         }
-        
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

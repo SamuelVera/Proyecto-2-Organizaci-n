@@ -7,6 +7,7 @@ import Controladores.RandomAccessCliente;
 import Controladores.RandomAccessPelicula;
 import java.io.IOException;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -27,13 +28,13 @@ public class ManejarPelicula extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        generos = new javax.swing.ButtonGroup();
         volver = new javax.swing.JButton();
         texto1 = new javax.swing.JLabel();
         texto2 = new javax.swing.JLabel();
         texto3 = new javax.swing.JLabel();
         campoTitulo = new javax.swing.JTextField();
         buscar1 = new javax.swing.JButton();
-        campoGenero = new javax.swing.JTextField();
         buscar2 = new javax.swing.JButton();
         CampoRating = new javax.swing.JComboBox<>();
         buscar3 = new javax.swing.JButton();
@@ -48,6 +49,12 @@ public class ManejarPelicula extends javax.swing.JFrame {
         res5 = new javax.swing.JLabel();
         comprar = new javax.swing.JButton();
         modificar = new javax.swing.JButton();
+        accion = new javax.swing.JRadioButton();
+        terror = new javax.swing.JRadioButton();
+        fantasia = new javax.swing.JRadioButton();
+        comedia = new javax.swing.JRadioButton();
+        drama = new javax.swing.JRadioButton();
+        historia = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -56,28 +63,28 @@ public class ManejarPelicula extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         volver.setFont(new java.awt.Font("Sylfaen", 0, 12)); // NOI18N
-        volver.setText("Volver a Ventana Principal");
+        volver.setText("Volver");
         volver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 volverActionPerformed(evt);
             }
         });
-        getContentPane().add(volver, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 430, 170, 20));
+        getContentPane().add(volver, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 430, 90, 20));
 
         texto1.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         texto1.setText("Buscar por Género:");
-        getContentPane().add(texto1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 160, -1));
+        getContentPane().add(texto1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 160, -1));
 
         texto2.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         texto2.setText("Buscar por Rating:");
-        getContentPane().add(texto2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 160, -1));
+        getContentPane().add(texto2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, 160, -1));
 
         texto3.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         texto3.setText("Buscar por Título:");
-        getContentPane().add(texto3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 160, -1));
+        getContentPane().add(texto3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 160, -1));
 
         campoTitulo.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
-        getContentPane().add(campoTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 420, 30));
+        getContentPane().add(campoTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 420, 30));
 
         buscar1.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         buscar1.setText("Buscar");
@@ -86,10 +93,7 @@ public class ManejarPelicula extends javax.swing.JFrame {
                 buscar1ActionPerformed(evt);
             }
         });
-        getContentPane().add(buscar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 60, 80, 20));
-
-        campoGenero.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
-        getContentPane().add(campoGenero, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 420, 30));
+        getContentPane().add(buscar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 50, 80, 20));
 
         buscar2.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         buscar2.setText("Buscar");
@@ -98,12 +102,12 @@ public class ManejarPelicula extends javax.swing.JFrame {
                 buscar2ActionPerformed(evt);
             }
         });
-        getContentPane().add(buscar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 110, 80, 20));
+        getContentPane().add(buscar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 80, 20));
 
         CampoRating.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         CampoRating.setMaximumRowCount(6);
-        CampoRating.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5", "4", "3", "2", "1", "0" }));
-        getContentPane().add(CampoRating, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 70, -1));
+        CampoRating.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5" }));
+        getContentPane().add(CampoRating, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 90, 80, -1));
 
         buscar3.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         buscar3.setText("Buscar");
@@ -112,19 +116,19 @@ public class ManejarPelicula extends javax.swing.JFrame {
                 buscar3ActionPerformed(evt);
             }
         });
-        getContentPane().add(buscar3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 130, 70, -1));
+        getContentPane().add(buscar3, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 120, 80, 20));
 
         res1.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         res1.setText("Título: ");
-        getContentPane().add(res1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 430, 30));
+        getContentPane().add(res1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 430, 30));
 
         res2.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         res2.setText("Género: ");
-        getContentPane().add(res2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 430, 30));
+        getContentPane().add(res2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 430, 30));
 
         res4.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         res4.setText("Precio de alquiler: ");
-        getContentPane().add(res4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 270, 30));
+        getContentPane().add(res4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 350, 270, 30));
 
         res3.setEditable(false);
         res3.setColumns(20);
@@ -133,7 +137,7 @@ public class ManejarPelicula extends javax.swing.JFrame {
         res3.setText("Descripción:");
         jScrollPane1.setViewportView(res3);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 420, 110));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 420, 110));
 
         eliminar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         eliminar.setText("Eliminar Película");
@@ -142,7 +146,7 @@ public class ManejarPelicula extends javax.swing.JFrame {
                 eliminarActionPerformed(evt);
             }
         });
-        getContentPane().add(eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 160, 20));
+        getContentPane().add(eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 430, 160, 20));
 
         IrAgregar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         IrAgregar.setText("Agregar Película");
@@ -151,15 +155,15 @@ public class ManejarPelicula extends javax.swing.JFrame {
                 IrAgregarActionPerformed(evt);
             }
         });
-        getContentPane().add(IrAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 160, 20));
+        getContentPane().add(IrAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 50, 160, 20));
 
         res6.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         res6.setText("Rating: ");
-        getContentPane().add(res6, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 330, 150, 30));
+        getContentPane().add(res6, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 350, 150, 30));
 
         res5.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         res5.setText("Stock: ");
-        getContentPane().add(res5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 430, 30));
+        getContentPane().add(res5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, 430, 30));
 
         comprar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         comprar.setText("Alquilar Película");
@@ -168,7 +172,7 @@ public class ManejarPelicula extends javax.swing.JFrame {
                 comprarActionPerformed(evt);
             }
         });
-        getContentPane().add(comprar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, 160, 20));
+        getContentPane().add(comprar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 410, 160, 20));
 
         modificar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         modificar.setText("Modificar Película");
@@ -177,14 +181,71 @@ public class ManejarPelicula extends javax.swing.JFrame {
                 modificarActionPerformed(evt);
             }
         });
-        getContentPane().add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 410, 160, 20));
+        getContentPane().add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 160, 20));
+
+        generos.add(accion);
+        accion.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        accion.setText("Acción");
+        getContentPane().add(accion, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
+
+        generos.add(terror);
+        terror.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        terror.setText("Terror");
+        getContentPane().add(terror, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, -1));
+
+        generos.add(fantasia);
+        fantasia.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        fantasia.setText("Fantasía");
+        getContentPane().add(fantasia, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, -1, -1));
+
+        generos.add(comedia);
+        comedia.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        comedia.setText("Comedia");
+        getContentPane().add(comedia, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, -1, -1));
+
+        generos.add(drama);
+        drama.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        drama.setText("Drama");
+        getContentPane().add(drama, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, -1, -1));
+
+        generos.add(historia);
+        historia.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        historia.setText("Historia");
+        getContentPane().add(historia, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, -1, -1));
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 460));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void buscar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscar3ActionPerformed
+        if(this.CampoRating.getSelectedIndex() == -1){
+            JOptionPane.showMessageDialog(this, "¡Seleccione un rating!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         
+        Object o = null;
+        
+        if(this.CampoRating.getSelectedIndex() == 0){
+            o = VenInicio.indSecRatPeli.get(0);
+        }else if(this.CampoRating.getSelectedIndex() == 1){
+            o = VenInicio.indSecRatPeli.get(1);
+        }else if(this.CampoRating.getSelectedIndex() == 2){
+            o = VenInicio.indSecRatPeli.get(2);
+        }else if(this.CampoRating.getSelectedIndex() == 3){
+            o = VenInicio.indSecRatPeli.get(3);
+        }else if(this.CampoRating.getSelectedIndex() == 4){
+            o = VenInicio.indSecRatPeli.get(4);
+        }else if(this.CampoRating.getSelectedIndex() == 5){
+            o = VenInicio.indSecRatPeli.get(5);
+        }
+        
+        Object[] aux = ((Indice)o).getApunta().toArray();
+        String aux2 = "";
+        for(int i=0;i<aux.length;i++){
+            aux2 = aux2+(String)aux[i]+". ";
+        }
+        
+        JOptionPane.showMessageDialog(this, aux2, "Coincidencias encontradas: "+aux.length, HEIGHT);
     }//GEN-LAST:event_buscar3ActionPerformed
 
     private void IrAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IrAgregarActionPerformed
@@ -254,6 +315,34 @@ public class ManejarPelicula extends javax.swing.JFrame {
     }//GEN-LAST:event_buscar1ActionPerformed
 
     private void buscar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscar2ActionPerformed
+        if(this.generos.isSelected(null)){
+            JOptionPane.showMessageDialog(this, "¡Seleccione un género!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        Object o = null;
+        
+        if(this.generos.isSelected(this.accion.getModel())){
+            o = VenInicio.indSecGenPeli.get(0);
+        }else if(this.generos.isSelected(this.comedia.getModel())){
+            o = VenInicio.indSecGenPeli.get(1);
+        }else if(this.generos.isSelected(this.drama.getModel())){
+            o = VenInicio.indSecGenPeli.get(2);
+        }else if(this.generos.isSelected(this.fantasia.getModel())){
+            o = VenInicio.indSecGenPeli.get(3);
+        }else if(this.generos.isSelected(this.historia.getModel())){
+            o = VenInicio.indSecGenPeli.get(4);
+        }else if(this.generos.isSelected(this.terror.getModel())){
+            o = VenInicio.indSecGenPeli.get(5);
+        }
+        
+        Object[] aux = ((Indice)o).getApunta().toArray();
+        String aux2 = "";
+        for(int i=0;i<aux.length;i++){
+            aux2 = aux2+(String)aux[i]+". ";
+        }
+        
+        JOptionPane.showMessageDialog(this, aux2, "Coincidencias encontradas: "+aux.length, HEIGHT);
         
     }//GEN-LAST:event_buscar2ActionPerformed
 
@@ -398,13 +487,18 @@ public class ManejarPelicula extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> CampoRating;
     private javax.swing.JButton IrAgregar;
+    private javax.swing.JRadioButton accion;
     private javax.swing.JButton buscar1;
     private javax.swing.JButton buscar2;
     private javax.swing.JButton buscar3;
-    private javax.swing.JTextField campoGenero;
     private javax.swing.JTextField campoTitulo;
+    private javax.swing.JRadioButton comedia;
     private javax.swing.JButton comprar;
+    private javax.swing.JRadioButton drama;
     private javax.swing.JButton eliminar;
+    private javax.swing.JRadioButton fantasia;
+    private javax.swing.ButtonGroup generos;
+    private javax.swing.JRadioButton historia;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton modificar;
@@ -414,6 +508,7 @@ public class ManejarPelicula extends javax.swing.JFrame {
     private javax.swing.JLabel res4;
     private javax.swing.JLabel res5;
     private javax.swing.JLabel res6;
+    private javax.swing.JRadioButton terror;
     private javax.swing.JLabel texto1;
     private javax.swing.JLabel texto2;
     private javax.swing.JLabel texto3;

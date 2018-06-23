@@ -24,17 +24,31 @@ public class AgregarPelicula extends javax.swing.JFrame {
         this.in = in;
         Pelicula p = RandomAccessPelicula.buscarReg(in.getNumReg());
         this.campo1.setText(p.getTitulo());
-        this.campo2.setText(p.getGenero());
+        if("Comedia".equals(p.getGenero())){
+            this.comedia.getModel().setSelected(true);
+        }else if("Drama".equals(p.getGenero())){
+            this.drama.getModel().setSelected(true);
+        }else if("Fantasia".equals(p.getGenero())){
+            this.fantasia.getModel().setSelected(true);
+        }else if("Historia".equals(p.getGenero())){
+            this.historia.getModel().setSelected(true);
+        }else if("Terror".equals(p.getGenero())){
+            this.terror.getModel().setSelected(true);
+        }else{
+            this.accion.getModel().setSelected(true);
+        }
         this.campo3.setText(p.getDescripcion());
         this.campo4.setText(""+p.getPrecioDia());
         this.campo6.setText(""+p.getStock());
         this.agregar.setVisible(false);
+        this.rating.setSelectedIndex(p.getRating());
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        generos = new javax.swing.ButtonGroup();
         texto1 = new javax.swing.JLabel();
         texto2 = new javax.swing.JLabel();
         texto3 = new javax.swing.JLabel();
@@ -42,13 +56,20 @@ public class AgregarPelicula extends javax.swing.JFrame {
         texto5 = new javax.swing.JLabel();
         campo6 = new javax.swing.JTextField();
         campo1 = new javax.swing.JTextField();
-        campo2 = new javax.swing.JTextField();
         campo4 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         campo3 = new javax.swing.JTextArea();
         volver = new javax.swing.JButton();
         agregar = new javax.swing.JButton();
         modificar = new javax.swing.JButton();
+        texto6 = new javax.swing.JLabel();
+        rating = new javax.swing.JComboBox<>();
+        accion = new javax.swing.JRadioButton();
+        comedia = new javax.swing.JRadioButton();
+        drama = new javax.swing.JRadioButton();
+        terror = new javax.swing.JRadioButton();
+        fantasia = new javax.swing.JRadioButton();
+        historia = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -62,31 +83,28 @@ public class AgregarPelicula extends javax.swing.JFrame {
 
         texto2.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         texto2.setText("Género:");
-        getContentPane().add(texto2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 90, 30));
+        getContentPane().add(texto2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 70, 30));
 
         texto3.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         texto3.setText("Descripción:");
-        getContentPane().add(texto3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 100, 20));
+        getContentPane().add(texto3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 100, 20));
 
         texto4.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         texto4.setText("Precio de alquiler por Día:");
-        getContentPane().add(texto4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 200, 30));
+        getContentPane().add(texto4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 200, 30));
 
         texto5.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         texto5.setText("Stock:");
-        getContentPane().add(texto5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 100, 30));
+        getContentPane().add(texto5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 60, 20));
 
         campo6.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
-        getContentPane().add(campo6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 260, 200, 30));
+        getContentPane().add(campo6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 280, 90, 20));
 
         campo1.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         getContentPane().add(campo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 320, 30));
 
-        campo2.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
-        getContentPane().add(campo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 320, 30));
-
         campo4.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
-        getContentPane().add(campo4, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 220, 180, 30));
+        getContentPane().add(campo4, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 240, 180, 30));
 
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
@@ -95,7 +113,7 @@ public class AgregarPelicula extends javax.swing.JFrame {
         campo3.setRows(5);
         jScrollPane1.setViewportView(campo3);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 380, 100));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 380, 100));
 
         volver.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         volver.setText("Cancelar");
@@ -104,7 +122,7 @@ public class AgregarPelicula extends javax.swing.JFrame {
                 volverActionPerformed(evt);
             }
         });
-        getContentPane().add(volver, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 300, 90, 20));
+        getContentPane().add(volver, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 310, 90, 20));
 
         agregar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         agregar.setText("Agregar");
@@ -113,7 +131,7 @@ public class AgregarPelicula extends javax.swing.JFrame {
                 agregarActionPerformed(evt);
             }
         });
-        getContentPane().add(agregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 300, 90, 20));
+        getContentPane().add(agregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 310, 90, 20));
 
         modificar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         modificar.setText("Modificar");
@@ -122,8 +140,45 @@ public class AgregarPelicula extends javax.swing.JFrame {
                 modificarActionPerformed(evt);
             }
         });
-        getContentPane().add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 300, -1, 20));
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 330));
+        getContentPane().add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 310, -1, 20));
+
+        texto6.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        texto6.setText("Rating:");
+        getContentPane().add(texto6, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 280, 60, 20));
+
+        rating.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5" }));
+        getContentPane().add(rating, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 280, 50, 20));
+
+        generos.add(accion);
+        accion.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        accion.setText("Acción");
+        getContentPane().add(accion, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, -1, -1));
+
+        generos.add(comedia);
+        comedia.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        comedia.setText("Comedia");
+        getContentPane().add(comedia, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 50, -1, -1));
+
+        generos.add(drama);
+        drama.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        drama.setText("Drama");
+        getContentPane().add(drama, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 50, -1, -1));
+
+        generos.add(terror);
+        terror.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        terror.setText("Terror");
+        getContentPane().add(terror, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, -1, -1));
+
+        generos.add(fantasia);
+        fantasia.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        fantasia.setText("Fantasía");
+        getContentPane().add(fantasia, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, -1, -1));
+
+        generos.add(historia);
+        historia.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        historia.setText("Historia");
+        getContentPane().add(historia, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 80, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 340));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -133,8 +188,8 @@ public class AgregarPelicula extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "¡No se ingreso el título!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if(this.campo2.getText().trim().length() == 0){
-            JOptionPane.showMessageDialog(this, "¡No se ingreso el género!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        if(this.generos.isSelected(null)){
+            JOptionPane.showMessageDialog(this, "¡No se seleccionó el género!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
         if(this.campo3.getText().trim().length() == 0){
@@ -152,14 +207,80 @@ public class AgregarPelicula extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "¡No se ingreso Stock de la película!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        if(this.rating.getSelectedIndex() == -1){
+            JOptionPane.showMessageDialog(this, "¡Seleccione un rating válido!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         
             //Verificar si hay una película por el mismo título
         if(VenInicio.BusBinString(this.campo1.getText(),VenInicio.indPrimPeli) != -1){
             JOptionPane.showMessageDialog(this, "¡Ya hay película por este nombre!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        
+        String genero;
+        Object obj;
+        
+        if(this.generos.isSelected(this.comedia.getModel())){
+            obj = VenInicio.indSecGenPeli.remove(1);
+            genero = "Comedia";
+            ((Indice)obj).AddLast(this.campo1.getText());
+            VenInicio.indSecGenPeli.add(1, obj);
+        }else if(this.generos.isSelected(this.drama.getModel())){
+            obj = VenInicio.indSecGenPeli.remove(2);
+            genero = "Drama";
+            ((Indice)obj).AddLast(this.campo1.getText());
+            VenInicio.indSecGenPeli.add(2, obj);
+        }else if(this.generos.isSelected(this.fantasia.getModel())){
+            obj = VenInicio.indSecGenPeli.remove(3);
+            genero = "Fantasia";
+            ((Indice)obj).AddLast(this.campo1.getText());
+            VenInicio.indSecGenPeli.add(3, obj);
+        }else if(this.generos.isSelected(this.historia.getModel())){
+            obj = VenInicio.indSecGenPeli.remove(4);
+            genero = "Historia";
+            ((Indice)obj).AddLast(this.campo1.getText());
+            VenInicio.indSecGenPeli.add(4, obj);
+        }else if(this.generos.isSelected(this.terror.getModel())){
+            obj = VenInicio.indSecGenPeli.remove(5);
+            genero = "Terror";
+            ((Indice)obj).AddLast(this.campo1.getText());
+            VenInicio.indSecGenPeli.add(5, obj);
+        }else{
+            obj = VenInicio.indSecGenPeli.remove(0);
+            genero = "Accion";
+            ((Indice)obj).AddLast(this.campo1.getText());
+            VenInicio.indSecGenPeli.add(0, obj);
+        }
+        
+        if(this.rating.getSelectedIndex() == 0){
+            obj = VenInicio.indSecRatPeli.remove(0);
+            ((Indice)obj).AddLast(this.campo1.getText());
+            VenInicio.indSecRatPeli.add(0, obj);
+        }else if(this.rating.getSelectedIndex() == 1){
+            obj = VenInicio.indSecRatPeli.remove(1);
+            ((Indice)obj).AddLast(this.campo1.getText());
+            VenInicio.indSecRatPeli.add(1, obj);
+        }else if(this.rating.getSelectedIndex() == 2){
+            obj = VenInicio.indSecRatPeli.remove(2);
+            ((Indice)obj).AddLast(this.campo1.getText());
+            VenInicio.indSecRatPeli.add(2, obj);
+        }else if(this.rating.getSelectedIndex() == 3){
+            obj = VenInicio.indSecRatPeli.remove(3);
+            ((Indice)obj).AddLast(this.campo1.getText());
+            VenInicio.indSecRatPeli.add(3, obj);
+        }else if(this.rating.getSelectedIndex() == 4){
+            obj = VenInicio.indSecRatPeli.remove(4);
+            ((Indice)obj).AddLast(this.campo1.getText());
+            VenInicio.indSecRatPeli.add(4, obj);
+        }else if(this.rating.getSelectedIndex() == 5){
+            obj = VenInicio.indSecRatPeli.remove(5);
+            ((Indice)obj).AddLast(this.campo1.getText());
+            VenInicio.indSecRatPeli.add(5, obj);
+        }
+        
             //Preparar datos para ingresar
-        Pelicula p = new Pelicula(this.campo1.getText(), Long.parseLong(this.campo4.getText()), 0, this.campo2.getText(), Integer.parseInt(this.campo6.getText()), this.campo3.getText(), 0, "");
+        Pelicula p = new Pelicula(this.campo1.getText(), Long.parseLong(this.campo4.getText()), this.rating.getSelectedIndex(), genero, Integer.parseInt(this.campo6.getText()), this.campo3.getText(), 0, "");
         Indice in = new Indice(p.getTitulo(), RandomAccessPelicula.getRegNum());
         
         try {
@@ -195,8 +316,8 @@ public class AgregarPelicula extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "¡No se ingreso el título!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if(this.campo2.getText().trim().length() == 0){
-            JOptionPane.showMessageDialog(this, "¡No se ingreso el género!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        if(this.generos.isSelected(null)){
+            JOptionPane.showMessageDialog(this, "¡No se seleccionó el género!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
         if(this.campo3.getText().trim().length() == 0){
@@ -214,6 +335,10 @@ public class AgregarPelicula extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "¡No se ingreso Stock de la película!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        if(this.rating.getSelectedIndex() == -1){
+            JOptionPane.showMessageDialog(this, "¡Ingrese un rating válido!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         
             //Verificar si hay una película por el mismo título
         if(VenInicio.BusBinString(this.campo1.getText(),VenInicio.indPrimPeli) != -1){
@@ -222,13 +347,75 @@ public class AgregarPelicula extends javax.swing.JFrame {
         }
         
         try {
-            //Preparar datos de modificación
+            String genero;
+            Object obj;
+            
+            if(this.generos.isSelected(this.comedia.getModel())){
+                obj = VenInicio.indSecGenPeli.remove(1);
+                genero = "Comedia";
+                ((Indice)obj).AddLast(this.campo1.getText());
+                VenInicio.indSecGenPeli.add(1, obj);
+            }else if(this.generos.isSelected(this.drama.getModel())){
+                obj = VenInicio.indSecGenPeli.remove(2);
+                genero = "Drama";
+                ((Indice)obj).AddLast(this.campo1.getText());
+                VenInicio.indSecGenPeli.add(2, obj);
+            }else if(this.generos.isSelected(this.fantasia.getModel())){
+                obj = VenInicio.indSecGenPeli.remove(3);
+                genero = "Fantasia";
+                ((Indice)obj).AddLast(this.campo1.getText());
+                VenInicio.indSecGenPeli.add(3, obj);
+            }else if(this.generos.isSelected(this.historia.getModel())){
+                obj = VenInicio.indSecGenPeli.remove(4);
+               genero = "Historia";
+                ((Indice)obj).AddLast(this.campo1.getText());
+                VenInicio.indSecGenPeli.add(4, obj);
+            }else if(this.generos.isSelected(this.terror.getModel())){
+                obj = VenInicio.indSecGenPeli.remove(5);
+                genero = "Terror";
+                ((Indice)obj).AddLast(this.campo1.getText());
+                VenInicio.indSecGenPeli.add(5, obj);
+            }else{
+                obj = VenInicio.indSecGenPeli.remove(0);
+                genero = "Accion";
+                ((Indice)obj).AddLast(this.campo1.getText());
+                VenInicio.indSecGenPeli.add(0, obj);
+            }
+            
+            if(this.rating.getSelectedIndex() == 0){
+                obj = VenInicio.indSecRatPeli.remove(0);
+                ((Indice)obj).AddLast(this.campo1.getText());
+                VenInicio.indSecRatPeli.add(0, obj);
+            }else if(this.rating.getSelectedIndex() == 1){
+                obj = VenInicio.indSecRatPeli.remove(1);
+                ((Indice)obj).AddLast(this.campo1.getText());
+                VenInicio.indSecRatPeli.add(1, obj);
+            }else if(this.rating.getSelectedIndex() == 2){
+                obj = VenInicio.indSecRatPeli.remove(2);
+                ((Indice)obj).AddLast(this.campo1.getText());
+                VenInicio.indSecRatPeli.add(2, obj);
+            }else if(this.rating.getSelectedIndex() == 3){
+                obj = VenInicio.indSecRatPeli.remove(3);
+                ((Indice)obj).AddLast(this.campo1.getText());
+                VenInicio.indSecRatPeli.add(3, obj);
+            }else if(this.rating.getSelectedIndex() == 4){
+                obj = VenInicio.indSecRatPeli.remove(4);
+                ((Indice)obj).AddLast(this.campo1.getText());
+                VenInicio.indSecRatPeli.add(4, obj);
+            }else if(this.rating.getSelectedIndex() == 5){
+                obj = VenInicio.indSecRatPeli.remove(5);
+                ((Indice)obj).AddLast(this.campo1.getText());
+                VenInicio.indSecRatPeli.add(5, obj);
+            }
+            
+                //Preparar datos de modificación
             Pelicula p = RandomAccessPelicula.buscarReg(this.in.getNumReg());
             p.setPrecioDia(Long.parseLong(this.campo4.getText()));
             p.setStock(Integer.parseInt(this.campo6.getText()));
             p.setDesc(this.campo3.getText());
             p.setTitulo(this.campo1.getText());
-            p.setGenero(this.campo2.getText());
+            p.setGenero(genero);
+            p.setRating(this.rating.getSelectedIndex());
             
             Object[] aux = VenInicio.indPrimPeli.toArray();
             int tope = 0, fondo = aux.length-1;
@@ -265,20 +452,28 @@ public class AgregarPelicula extends javax.swing.JFrame {
     }//GEN-LAST:event_modificarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton accion;
     private javax.swing.JButton agregar;
     private javax.swing.JTextField campo1;
-    private javax.swing.JTextField campo2;
     private javax.swing.JTextArea campo3;
     private javax.swing.JTextField campo4;
     private javax.swing.JTextField campo6;
+    private javax.swing.JRadioButton comedia;
+    private javax.swing.JRadioButton drama;
+    private javax.swing.JRadioButton fantasia;
+    private javax.swing.ButtonGroup generos;
+    private javax.swing.JRadioButton historia;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton modificar;
+    private javax.swing.JComboBox<String> rating;
+    private javax.swing.JRadioButton terror;
     private javax.swing.JLabel texto1;
     private javax.swing.JLabel texto2;
     private javax.swing.JLabel texto3;
     private javax.swing.JLabel texto4;
     private javax.swing.JLabel texto5;
+    private javax.swing.JLabel texto6;
     private javax.swing.JButton volver;
     // End of variables declaration//GEN-END:variables
 }
