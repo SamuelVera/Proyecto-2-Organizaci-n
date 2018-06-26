@@ -90,6 +90,9 @@ public class VenInicio extends javax.swing.JFrame {
                 med = (fondo+tope)/2;
             }else{
                 fondo = med-1;
+                if(clave == ((Indice)arreglo[med]).getClave()){
+                    break;
+                }
                 med = (fondo+tope)/2;
             }
         }
@@ -112,6 +115,9 @@ public class VenInicio extends javax.swing.JFrame {
                 tope = med+1;
                 med = (fondo+tope)/2;
             }else{
+                if(clave.equals(((Indice)arreglo[med]).getClave2())){
+                    break;
+                }
                 fondo = med-1;
                 med = (fondo+tope)/2;
             }
@@ -208,7 +214,7 @@ public class VenInicio extends javax.swing.JFrame {
         if(f3.exists()){
             VenInicio.indClienAcc.crearFlujo(f3);
                 //Cargar el respaldo clave de clientes
-            Indice[] aux = VenInicio.indClienAcc.ExtraerAllRegInt();
+            Object[] aux = VenInicio.indClienAcc.ExtraerAllRegInt();
             for(int i=0;i<aux.length;i++){
                 VenInicio.indClien.addLast(aux[i]);
             }
@@ -220,7 +226,7 @@ public class VenInicio extends javax.swing.JFrame {
         if(f4.exists()){
             VenInicio.indPrimPeliAcc.crearFlujo(f4);
                 //Cargar el respaldo clave primaria de películas
-            Indice[] aux = VenInicio.indPrimPeliAcc.ExtraerAllRegString();
+            Object[] aux = VenInicio.indPrimPeliAcc.ExtraerAllRegString();
             
             LinkedList g1 = new LinkedList();
             LinkedList g2 = new LinkedList();
@@ -239,9 +245,9 @@ public class VenInicio extends javax.swing.JFrame {
             Pelicula p;
             for(int i=0;i<aux.length;i++){
                 
-                if(aux[i].getNumReg() != -1){
-                    p = RandomAccessPelicula.buscarReg(aux[i].getNumReg());
-                
+                if(((Indice)aux[i]).getNumReg() != -1){
+                    p = RandomAccessPelicula.buscarReg(((Indice)aux[i]).getNumReg());
+            
                     if(p.getRating() == 0){
                         r0.addLast(p.getTitulo());
                     }else if(p.getRating() == 1){
@@ -270,6 +276,7 @@ public class VenInicio extends javax.swing.JFrame {
                         g6.addLast(p.getTitulo());
                     }
                 }
+                
                 VenInicio.indPrimPeli.addLast(aux[i]);
             }
             

@@ -74,22 +74,30 @@ public class RandomAccessIndex {
     }
     
         //Extraer todos los índices al comienzo de una ejecución
-    public Indice[] ExtraerAllRegInt() throws IOException{
+    public Object[] ExtraerAllRegInt() throws IOException{
         Indice[] aux = new Indice[RegNum];
+        LinkedList aux2 = new LinkedList();
         for(int i=0;i<aux.length;i++){
-            flujo.seek(i*RegTam);
-            aux[i] = new Indice(flujo.readInt(),flujo.readUTF(),flujo.readInt());
+            this.flujo.seek(i*RegTam);
+            Indice j = new Indice(this.flujo.readInt(),this.flujo.readUTF(),this.flujo.readInt());
+            if(j.getNumReg() != -1){
+                aux2.addLast(j);
+            }
         }
-        return aux;
+        return aux2.toArray();
     }
     
-    public Indice[] ExtraerAllRegString() throws IOException{
+    public Object[] ExtraerAllRegString() throws IOException{
         Indice[] aux = new Indice[RegNum];
+        LinkedList aux2 = new LinkedList();
         for(int i=0;i<aux.length;i++){
-            flujo.seek(i*RegTam);
-            aux[i] = new Indice(flujo.readUTF(),flujo.readInt());
+            this.flujo.seek(i*RegTam);
+            Indice j = new Indice(this.flujo.readUTF(),this.flujo.readInt());
+            if(j.getNumReg() != -1){
+                aux2.addLast(j);
+            }
         }
-        return aux;
+        return aux2.toArray();
     }
     
 }

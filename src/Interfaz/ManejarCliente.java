@@ -252,11 +252,11 @@ public class ManejarCliente extends javax.swing.JFrame {
                 this.texto5.setText("Fecha de Alquiler: NA");
                 this.texto6.setText("Fecha máxima de Devolución: NA");
             }else{
-                this.texto4.setText("Película alquilada: "+c.getPelicula());
+                this.texto4.setText("Película Alquilada: "+c.getPelicula());
                 Date fechaA = new Date(c.getFechaAlq());
                 this.texto5.setText("Fecha de Alquiler: "+ fechaA.toString());
                 fechaA = new Date(c.getFechaDevol());
-                this.texto6.setText("Fecha máxima de Devolución: "+ fechaA.toString());
+                this.texto6.setText("Fecha de Devolución: "+ fechaA.toString());
             }
             
         } catch (IOException ex) {
@@ -301,6 +301,12 @@ public class ManejarCliente extends javax.swing.JFrame {
     private void devolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_devolverActionPerformed
         try {
             Cliente c = RandomAccessCliente.buscarReg(this.clienModi.getNumReg());
+            
+            if("0".equals(c.getPelicula())){
+                JOptionPane.showMessageDialog(this, "¡No hay película alquilada!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
             int aux = VenInicio.BusBinString(c.getPelicula(), VenInicio.indPrimPeli);
             if(aux != -1){
                 Pelicula p = RandomAccessPelicula.buscarReg(aux);
@@ -315,9 +321,12 @@ public class ManejarCliente extends javax.swing.JFrame {
             c.setFechaVenc(0);
             c.setPelicula("0");
             
-            this.texto4.setText("Película Alquilada: ");
-            this.texto5.setText("Fecha de alquiler: NA");
-            this.texto6.setText("Fecha de devolución: NA");
+            aux = VenInicio.BusBin(c.getCi(), VenInicio.indClien);
+            RandomAccessCliente.ingresarReg(c,aux);
+            
+            this.texto4.setText("Película Alquilada: 0");
+            this.texto5.setText("Fecha de Alquiler: NA");
+            this.texto6.setText("Fecha de Devolución: NA");
             
         } catch (IOException ex) {
             Logger.getLogger(ManejarCliente.class.getName()).log(Level.SEVERE, null, ex);

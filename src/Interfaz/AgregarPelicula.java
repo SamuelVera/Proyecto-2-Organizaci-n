@@ -98,12 +98,22 @@ public class AgregarPelicula extends javax.swing.JFrame {
         getContentPane().add(texto5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 60, 20));
 
         campo6.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        campo6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                campo6KeyTyped(evt);
+            }
+        });
         getContentPane().add(campo6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 280, 90, 20));
 
         campo1.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         getContentPane().add(campo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 320, 30));
 
         campo4.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        campo4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                campo4KeyTyped(evt);
+            }
+        });
         getContentPane().add(campo4, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 240, 180, 30));
 
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -203,8 +213,16 @@ public class AgregarPelicula extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "¡No se ingreso el precio de alquiler por día!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        if(Long.parseLong(this.campo4.getText())<0){
+            JOptionPane.showMessageDialog(this, "¡No se puede ingresar un precio negativo!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         if(this.campo6.getText().trim().length() == 0){
             JOptionPane.showMessageDialog(this, "¡No se ingreso Stock de la película!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if(Integer.parseInt(this.campo6.getText())<0){
+            JOptionPane.showMessageDialog(this, "¡No se puede ingresar un stock negativo!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
         if(this.rating.getSelectedIndex() == -1){
@@ -331,8 +349,16 @@ public class AgregarPelicula extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "¡No se ingreso el precio de alquiler por día!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        if(Long.parseLong(this.campo4.getText())<0){
+            JOptionPane.showMessageDialog(this, "¡No se puede ingresar un precio negativo!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         if(this.campo6.getText().trim().length() == 0){
             JOptionPane.showMessageDialog(this, "¡No se ingreso Stock de la película!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if(Integer.parseInt(this.campo6.getText())<0){
+            JOptionPane.showMessageDialog(this, "¡No se puede ingresar un stock negativo!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
         if(this.rating.getSelectedIndex() == -1){
@@ -450,6 +476,26 @@ public class AgregarPelicula extends javax.swing.JFrame {
         aux.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_modificarActionPerformed
+
+    private void campo4KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campo4KeyTyped
+        char validar = evt.getKeyChar();
+            //Sin espacios ni letras
+        if(Character.isLetter(validar) || Character.isSpaceChar(validar)){
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(rootPane, "INGRESAR SOLO NÚMEROS","    ¡¡ERROR!!",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_campo4KeyTyped
+
+    private void campo6KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campo6KeyTyped
+        char validar = evt.getKeyChar();
+            //Sin espacios ni letras
+        if(Character.isLetter(validar) || Character.isSpaceChar(validar)){
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(rootPane, "INGRESAR SOLO NÚMEROS","    ¡¡ERROR!!",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_campo6KeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton accion;
