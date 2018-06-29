@@ -250,13 +250,13 @@ public class ManejarCliente extends javax.swing.JFrame {
             if("0".equals(c.getPelicula())){
                 this.texto4.setText("Película alquilada: 0");
                 this.texto5.setText("Fecha de Alquiler: NA");
-                this.texto6.setText("Fecha máxima de Devolución: NA");
+                this.texto6.setText("Fecha de Devolución: NA");
             }else{
                 this.texto4.setText("Película Alquilada: "+c.getPelicula());
                 Date fechaA = new Date(c.getFechaAlq());
-                this.texto5.setText("Fecha de Alquiler: "+ fechaA.toString());
+                this.texto5.setText("Fecha de Alquiler: "+fechaA.toLocaleString());
                 fechaA = new Date(c.getFechaDevol());
-                this.texto6.setText("Fecha de Devolución: "+ fechaA.toString());
+                this.texto6.setText("Fecha de Devolución: "+ fechaA.toLocaleString());
             }
             
         } catch (IOException ex) {

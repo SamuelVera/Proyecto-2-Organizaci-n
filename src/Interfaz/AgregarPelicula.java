@@ -4,6 +4,7 @@ import Accesos.Indice;
 import Accesos.Pelicula;
 import Controladores.RandomAccessPelicula;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -22,6 +23,7 @@ public class AgregarPelicula extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.in = in;
+        System.out.println(in.getClave2());
         Pelicula p = RandomAccessPelicula.buscarReg(in.getNumReg());
         this.campo1.setText(p.getTitulo());
         if("Comedia".equals(p.getGenero())){
@@ -44,6 +46,26 @@ public class AgregarPelicula extends javax.swing.JFrame {
         this.rating.setSelectedIndex(p.getRating());
     }
 
+        //Posición a eliminar en una lista de claves secundarias
+    private int eliminarLista(Object[] aux, Pelicula p){
+        for(int i=0;i<aux.length;i++){
+            if(((String)aux[i]).compareTo(p.getTitulo()) == 0){
+                return i;
+            }
+        }
+        return 0;
+    }
+    
+        //Ayuda para eliminar de la lista de llaves secundarias
+    private Object ayudaEliminar(Object obj, Pelicula p){
+        LinkedList l = ((Indice)obj).getApunta();
+        Object[] aux = l.toArray();
+        int apunta = this.eliminarLista(aux, p);
+        l.remove(apunta);
+        ((Indice)obj).setApunta(l);
+        return obj;
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -213,16 +235,16 @@ public class AgregarPelicula extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "¡No se ingreso el precio de alquiler por día!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if(Long.parseLong(this.campo4.getText())<0){
-            JOptionPane.showMessageDialog(this, "¡No se puede ingresar un precio negativo!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        if(Long.parseLong(this.campo4.getText()) <= 0){
+            JOptionPane.showMessageDialog(this, "¡No se puede ingresar un precio negativo o 0!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
         if(this.campo6.getText().trim().length() == 0){
             JOptionPane.showMessageDialog(this, "¡No se ingreso Stock de la película!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if(Integer.parseInt(this.campo6.getText())<0){
-            JOptionPane.showMessageDialog(this, "¡No se puede ingresar un stock negativo!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        if(Integer.parseInt(this.campo6.getText()) <= 0){
+            JOptionPane.showMessageDialog(this, "¡No se puede ingresar un stock negativo o 0!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
         if(this.rating.getSelectedIndex() == -1){
@@ -273,6 +295,7 @@ public class AgregarPelicula extends javax.swing.JFrame {
         
         if(this.rating.getSelectedIndex() == 0){
             obj = VenInicio.indSecRatPeli.remove(0);
+            Object[] aux2 = ((Indice)obj).getApunta().toArray();
             ((Indice)obj).AddLast(this.campo1.getText());
             VenInicio.indSecRatPeli.add(0, obj);
         }else if(this.rating.getSelectedIndex() == 1){
@@ -349,16 +372,16 @@ public class AgregarPelicula extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "¡No se ingreso el precio de alquiler por día!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if(Long.parseLong(this.campo4.getText())<0){
-            JOptionPane.showMessageDialog(this, "¡No se puede ingresar un precio negativo!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        if(Long.parseLong(this.campo4.getText()) <= 0){
+            JOptionPane.showMessageDialog(this, "¡No se puede ingresar un precio negativo o 0!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
         if(this.campo6.getText().trim().length() == 0){
             JOptionPane.showMessageDialog(this, "¡No se ingreso Stock de la película!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if(Integer.parseInt(this.campo6.getText())<0){
-            JOptionPane.showMessageDialog(this, "¡No se puede ingresar un stock negativo!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        if(Integer.parseInt(this.campo6.getText()) <= 0){
+            JOptionPane.showMessageDialog(this, "¡No se puede ingresar un stock negativo o 0!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
         if(this.rating.getSelectedIndex() == -1){
@@ -366,16 +389,73 @@ public class AgregarPelicula extends javax.swing.JFrame {
             return;
         }
         
-            //Verificar si hay una película por el mismo título
-        if(VenInicio.BusBinString(this.campo1.getText(),VenInicio.indPrimPeli) != -1){
-            JOptionPane.showMessageDialog(this, "¡Ya hay película por este nombre!", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
         try {
             String genero;
             Object obj;
             
+            Pelicula p = RandomAccessPelicula.buscarReg(this.in.getNumReg());
+            
+                //Verificar si hay una película por el mismo título que no sea la que se modifica
+            if(VenInicio.BusBinString(this.campo1.getText(),VenInicio.indPrimPeli) != -1 && this.campo1.getText().compareTo(p.getTitulo()) != 0){
+                JOptionPane.showMessageDialog(this, "¡Ya hay película por este nombre!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+                //Eliminar la película de las llaves secundarias
+            if(p.getRating() == 0){
+                obj = VenInicio.indSecRatPeli.remove(0);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecRatPeli.add(0, obj);
+            }else if(p.getRating() == 1){
+                obj = VenInicio.indSecRatPeli.remove(1);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecRatPeli.add(1, obj);
+            }else if(p.getRating() == 2){
+                obj = VenInicio.indSecRatPeli.remove(2);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecRatPeli.add(2, obj);
+            }else if(p.getRating() == 3){
+                obj = VenInicio.indSecRatPeli.remove(3);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecRatPeli.add(3, obj);
+            }else if(p.getRating() == 4){
+                obj = VenInicio.indSecRatPeli.remove(4);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecRatPeli.add(4, obj);
+            }else if(p.getRating() == 5){
+                obj = VenInicio.indSecRatPeli.remove(5);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecRatPeli.add(5, obj);
+            }
+            
+                //Eliminar la película de las llaves secundarias
+            if(p.getGenero().compareTo("Accion") == 0){
+                obj = VenInicio.indSecGenPeli.remove(0);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecGenPeli.add(0, obj);
+            }else if(p.getGenero().compareTo("Comedia") == 0){
+                obj = VenInicio.indSecGenPeli.remove(1);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecGenPeli.add(1, obj);
+            }else if(p.getGenero().compareTo("Drama") == 0){
+                obj = VenInicio.indSecGenPeli.remove(2);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecGenPeli.add(2, obj);
+            }else if(p.getGenero().compareTo("Fantasia") == 0){
+                obj = VenInicio.indSecGenPeli.remove(3);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecGenPeli.add(3, obj);
+            }else if(p.getGenero().compareTo("Historia") == 0){
+                obj = VenInicio.indSecGenPeli.remove(4);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecGenPeli.add(4, obj);
+            }else if(p.getGenero().compareTo("Terror") == 0){
+                obj = VenInicio.indSecGenPeli.remove(5);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecGenPeli.add(5, obj);
+            }
+            
+                //Agregar a lista de géneros
             if(this.generos.isSelected(this.comedia.getModel())){
                 obj = VenInicio.indSecGenPeli.remove(1);
                 genero = "Comedia";
@@ -408,6 +488,8 @@ public class AgregarPelicula extends javax.swing.JFrame {
                 VenInicio.indSecGenPeli.add(0, obj);
             }
             
+            
+                //Agregar a lista de rating
             if(this.rating.getSelectedIndex() == 0){
                 obj = VenInicio.indSecRatPeli.remove(0);
                 ((Indice)obj).AddLast(this.campo1.getText());
@@ -435,7 +517,6 @@ public class AgregarPelicula extends javax.swing.JFrame {
             }
             
                 //Preparar datos de modificación
-            Pelicula p = RandomAccessPelicula.buscarReg(this.in.getNumReg());
             p.setPrecioDia(Long.parseLong(this.campo4.getText()));
             p.setStock(Integer.parseInt(this.campo6.getText()));
             p.setDesc(this.campo3.getText());
@@ -443,6 +524,7 @@ public class AgregarPelicula extends javax.swing.JFrame {
             p.setGenero(genero);
             p.setRating(this.rating.getSelectedIndex());
             
+                //Actualizar el indice primario de películas
             Object[] aux = VenInicio.indPrimPeli.toArray();
             int tope = 0, fondo = aux.length-1;
             int med = (tope+fondo)/2;
@@ -466,12 +548,14 @@ public class AgregarPelicula extends javax.swing.JFrame {
             VenInicio.indPrimPeli.remove(med);
             VenInicio.indPrimPeli.add(med,this.in);
             
+                //Sobreescribir archivo
             RandomAccessPelicula.ingresarReg(p,this.in.getNumReg());
             
         } catch (IOException ex) {
             Logger.getLogger(AgregarPelicula.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+            //Volver al manejador
         ManejarPelicula aux = new ManejarPelicula();
         aux.setVisible(true);
         this.dispose();

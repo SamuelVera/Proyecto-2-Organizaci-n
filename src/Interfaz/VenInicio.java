@@ -133,43 +133,65 @@ public class VenInicio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel2 = new javax.swing.JLabel();
         irManejarClientes = new javax.swing.JButton();
         irManejarPeliculas = new javax.swing.JButton();
         Salir = new javax.swing.JButton();
+        texto2 = new javax.swing.JLabel();
         fecha = new javax.swing.JLabel();
+        texto1 = new javax.swing.JLabel();
+        imagen = new javax.swing.JLabel();
+        fondo = new javax.swing.JLabel();
+
+        jLabel2.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        jLabel2.setText("Buscar, agregar y eliminar clientes ---->");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        irManejarClientes.setFont(new java.awt.Font("Sylfaen", 0, 24)); // NOI18N
-        irManejarClientes.setText("Manejar Clientes");
+        irManejarClientes.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        irManejarClientes.setText("Ir");
         irManejarClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 irManejarClientesActionPerformed(evt);
             }
         });
-        getContentPane().add(irManejarClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 210, 40));
+        getContentPane().add(irManejarClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 160, 60, 20));
 
-        irManejarPeliculas.setFont(new java.awt.Font("Sylfaen", 0, 24)); // NOI18N
-        irManejarPeliculas.setText("Manejar Peliculas");
+        irManejarPeliculas.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        irManejarPeliculas.setText("Ir");
         irManejarPeliculas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 irManejarPeliculasActionPerformed(evt);
             }
         });
-        getContentPane().add(irManejarPeliculas, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 210, 40));
+        getContentPane().add(irManejarPeliculas, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 210, 60, 20));
 
-        Salir.setFont(new java.awt.Font("Sylfaen", 0, 24)); // NOI18N
+        Salir.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         Salir.setText("Salir");
         Salir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SalirActionPerformed(evt);
             }
         });
-        getContentPane().add(Salir, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 210, 40));
-        getContentPane().add(fecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 260, 100, 30));
+        getContentPane().add(Salir, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 260, 90, 30));
+
+        texto2.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        texto2.setText("Buscar, agregar y eliminar películas ---->");
+        getContentPane().add(texto2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 320, 40));
+        getContentPane().add(fecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 220, 170, 30));
+
+        texto1.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        texto1.setText("Buscar, agregar y eliminar clientes ---->");
+        getContentPane().add(texto1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 320, 40));
+
+        imagen.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        imagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Blockbuster_logo2.png"))); // NOI18N
+        imagen.setText("Blockbuster LLC  © ");
+        getContentPane().add(imagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 360, 110));
+        getContentPane().add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -294,6 +316,7 @@ public class VenInicio extends javax.swing.JFrame {
             VenInicio.indSecRatPeli.addLast(new Indice(4,r4));
             VenInicio.indSecRatPeli.addLast(new Indice(5,r5));
             
+            
         }else{
             VenInicio.indSecGenPeli.addLast(new Indice("accion",new LinkedList()));
             VenInicio.indSecGenPeli.addLast(new Indice("comedia",new LinkedList()));
@@ -323,8 +346,13 @@ public class VenInicio extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Salir;
     private javax.swing.JLabel fecha;
+    private javax.swing.JLabel fondo;
+    private javax.swing.JLabel imagen;
     private javax.swing.JButton irManejarClientes;
     private javax.swing.JButton irManejarPeliculas;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel texto1;
+    private javax.swing.JLabel texto2;
     // End of variables declaration//GEN-END:variables
 
 }

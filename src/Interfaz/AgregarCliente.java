@@ -217,18 +217,19 @@ public class AgregarCliente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "¡Exece los 40 caractéres de campo!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
-            //Validación de números
-        
-            //Verificar si no existe cliente con esa cédula
-        int ci = Integer.parseInt(this.campo1.getText().trim());
-        if(VenInicio.BusBin(ci, VenInicio.indClien) != -1){
-            JOptionPane.showMessageDialog(this, "¡Ya existe cliente con esa cédula!", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
         
         try {
+            
             String nomape = this.campo2.getText() +"%"+ this.campo3.getText();
             Cliente c = RandomAccessCliente.buscarReg(this.in.getNumReg());
+            
+                //Verificar si no existe cliente con esa cédula y distinto a la que se está buscando
+            int ci = Integer.parseInt(this.campo1.getText().trim());
+            if(VenInicio.BusBin(ci, VenInicio.indClien) != -1 && ci != c.getCi() ){
+                JOptionPane.showMessageDialog(this, "¡Ya existe cliente con esa cédula!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
             c.setCi(ci);
             c.setNomape(nomape);
             

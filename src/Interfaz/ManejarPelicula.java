@@ -24,6 +24,26 @@ public class ManejarPelicula extends javax.swing.JFrame {
         this.modificar.setVisible(false);
     }
 
+        //Posición a eliminar en una lista de claves secundarias
+    private int eliminarLista(Object[] aux, Pelicula p){
+        for(int i=0;i<aux.length;i++){
+            if(((String)aux[i]).compareTo(p.getTitulo()) == 0){
+                return i;
+            }
+        }
+        return 0;
+    }
+    
+        //Ayuda para eliminar de la lista de llaves secundarias
+    private Object ayudaEliminar(Object obj, Pelicula p){
+        LinkedList l = ((Indice)obj).getApunta();
+        Object[] aux = l.toArray();
+        int apunta = this.eliminarLista(aux, p);
+        l.remove(apunta);
+        ((Indice)obj).setApunta(l);
+        return obj;
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -55,7 +75,9 @@ public class ManejarPelicula extends javax.swing.JFrame {
         comedia = new javax.swing.JRadioButton();
         drama = new javax.swing.JRadioButton();
         historia = new javax.swing.JRadioButton();
-        jLabel1 = new javax.swing.JLabel();
+        texto4 = new javax.swing.JLabel();
+        texto5 = new javax.swing.JLabel();
+        fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -161,9 +183,9 @@ public class ManejarPelicula extends javax.swing.JFrame {
         res6.setText("Rating: ");
         getContentPane().add(res6, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 350, 150, 30));
 
-        res5.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        res5.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         res5.setText("Stock: ");
-        getContentPane().add(res5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, 430, 30));
+        getContentPane().add(res5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 170, 30));
 
         comprar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         comprar.setText("Alquilar Película");
@@ -212,7 +234,13 @@ public class ManejarPelicula extends javax.swing.JFrame {
         historia.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         historia.setText("Historia");
         getContentPane().add(historia, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, -1, -1));
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 460));
+
+        texto4.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        getContentPane().add(texto4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 370, 270, 20));
+
+        texto5.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        getContentPane().add(texto5, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 390, 270, 20));
+        getContentPane().add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 460));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -274,11 +302,7 @@ public class ManejarPelicula extends javax.swing.JFrame {
         
         try {
             this.peliModi = VenInicio.indPrimPeliAcc.buscarRegString(aux);
-        } catch (IOException ex) {
-            Logger.getLogger(ManejarPelicula.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        try {
+            System.out.println(this.peliModi.getClave2());
             Pelicula p = RandomAccessPelicula.buscarReg(aux);
             this.res1.setText("Título: "+p.getTitulo());
             this.res2.setText("Género: "+p.getGenero());
@@ -300,9 +324,13 @@ public class ManejarPelicula extends javax.swing.JFrame {
                     }
                 }
                 Date s1 = new Date(p.getFechaUlt());
-                this.res5.setText("Stock: 0, Último cliente en alquilar: "+auxNom+" "+auxApe+" Fecha de devolución: "+s1.toString());
+                this.res5.setText("Stock: 0");
+                this.texto4.setText("Último cliente en alquilar: "+auxNom+" "+auxApe);
+                this.texto5.setText("Fecha de devolución: "+s1.toLocaleString());
             }else{
                 this.res5.setText("Stock: "+p.getStock()+" Unidades");
+                this.texto4.setText("");
+                this.texto5.setText("");
             }
             this.res6.setText("Rating: "+p.getRating());
         } catch (IOException ex) {
@@ -347,7 +375,72 @@ public class ManejarPelicula extends javax.swing.JFrame {
     }//GEN-LAST:event_buscar2ActionPerformed
 
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
-        this.peliModi.setNumReg(-1);
+        
+        
+        Pelicula p;
+        
+        try {
+            p = RandomAccessPelicula.buscarReg(this.peliModi.getNumReg());
+            this.peliModi.setNumReg(-1);
+            Object obj;
+        
+            //Eliminar la película de las llaves secundarias
+            if(p.getRating() == 0){
+                obj = VenInicio.indSecRatPeli.remove(0);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecRatPeli.add(0, obj);
+            }else if(p.getRating() == 1){
+                obj = VenInicio.indSecRatPeli.remove(1);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecRatPeli.add(1, obj);
+            }else if(p.getRating() == 2){
+                obj = VenInicio.indSecRatPeli.remove(2);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecRatPeli.add(2, obj);
+            }else if(p.getRating() == 3){
+                obj = VenInicio.indSecRatPeli.remove(3);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecRatPeli.add(3, obj);
+            }else if(p.getRating() == 4){
+                obj = VenInicio.indSecRatPeli.remove(4);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecRatPeli.add(4, obj);
+            }else if(p.getRating() == 5){
+                obj = VenInicio.indSecRatPeli.remove(5);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecRatPeli.add(5, obj);
+            }
+            
+            //Eliminar la película de las llaves secundarias
+            if(p.getGenero().compareTo("Accion") == 0){
+                obj = VenInicio.indSecGenPeli.remove(0);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecGenPeli.add(0, obj);
+            }else if(p.getGenero().compareTo("Comedia") == 0){
+                obj = VenInicio.indSecGenPeli.remove(1);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecGenPeli.add(1, obj);
+            }else if(p.getGenero().compareTo("Drama") == 0){
+                obj = VenInicio.indSecGenPeli.remove(2);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecGenPeli.add(2, obj);
+            }else if(p.getGenero().compareTo("Fantasia") == 0){
+                obj = VenInicio.indSecGenPeli.remove(3);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecGenPeli.add(3, obj);
+            }else if(p.getGenero().compareTo("Historia") == 0){
+                obj = VenInicio.indSecGenPeli.remove(4);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecGenPeli.add(4, obj);
+            }else if(p.getGenero().compareTo("Terror") == 0){
+                obj = VenInicio.indSecGenPeli.remove(5);
+                obj = this.ayudaEliminar(obj, p);
+                VenInicio.indSecGenPeli.add(5, obj);
+            }
+        
+        } catch (IOException ex) {
+            Logger.getLogger(ManejarPelicula.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         Object[] aux = VenInicio.indPrimPeli.toArray();
         int tope = 0, fondo = aux.length-1;
@@ -377,10 +470,13 @@ public class ManejarPelicula extends javax.swing.JFrame {
         this.res4.setText("Precio de Alquiler: ");
         this.res5.setText("Stock: ");
         this.res6.setText("Rating: ");
+        this.texto4.setText("");
+        this.texto5.setText("");
     }//GEN-LAST:event_eliminarActionPerformed
 
     private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
         AgregarPelicula aux;
+        System.out.println(this.peliModi.getClave2());
         try {
             aux = new AgregarPelicula(this.peliModi);
             aux.setVisible(true);
@@ -469,7 +565,10 @@ public class ManejarPelicula extends javax.swing.JFrame {
                     }
                 }
                 Date s1 = new Date(p.getFechaUlt());
-                this.res5.setText("Stock: 0, Último cliente en alquilar: "+auxNom+" "+auxApe+" Fecha de devolución: "+s1.toString());
+                this.res5.setText("Stock: 0");
+                this.res5.setText("Stock: 0");
+                this.texto4.setText("Último cliente en alquilar: "+auxNom+" "+auxApe);
+                this.texto5.setText("Fecha de devolución: "+s1.toLocaleString());
             }else{
                 this.res5.setText("Stock: "+p.getStock()+" Unidades");
             }
@@ -497,9 +596,9 @@ public class ManejarPelicula extends javax.swing.JFrame {
     private javax.swing.JRadioButton drama;
     private javax.swing.JButton eliminar;
     private javax.swing.JRadioButton fantasia;
+    private javax.swing.JLabel fondo;
     private javax.swing.ButtonGroup generos;
     private javax.swing.JRadioButton historia;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton modificar;
     private javax.swing.JLabel res1;
@@ -512,6 +611,8 @@ public class ManejarPelicula extends javax.swing.JFrame {
     private javax.swing.JLabel texto1;
     private javax.swing.JLabel texto2;
     private javax.swing.JLabel texto3;
+    private javax.swing.JLabel texto4;
+    private javax.swing.JLabel texto5;
     private javax.swing.JButton volver;
     // End of variables declaration//GEN-END:variables
 }

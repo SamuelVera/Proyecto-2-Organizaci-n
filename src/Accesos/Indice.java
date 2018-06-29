@@ -37,6 +37,10 @@ public class Indice {
         return this.apunta;
     }
     
+    public void setApunta(LinkedList l){
+        this.apunta = l;
+    }
+    
     public void AddLast(String titulo){
         this.apunta.addLast(titulo);
     }
