@@ -1,8 +1,8 @@
 package Interfaz;
 
-import Accesos.Cliente;
-import Accesos.Indice;
-import Accesos.Pelicula;
+import UsuariosDatos.Cliente;
+import UsuariosDatos.Indice;
+import UsuariosDatos.Pelicula;
 import Controladores.RandomAccessCliente;
 import Controladores.RandomAccessPelicula;
 import java.io.IOException;
@@ -102,12 +102,13 @@ public class ManejarPelicula extends javax.swing.JFrame {
         getContentPane().add(texto2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, 160, -1));
 
         texto3.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
-        texto3.setText("Buscar por Título:");
-        getContentPane().add(texto3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 160, -1));
+        texto3.setText("Buscar por Título: (Considera Mayús y espacios en la búsqueda)");
+        getContentPane().add(texto3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 380, -1));
 
         campoTitulo.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         getContentPane().add(campoTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 420, 30));
 
+        buscar1.setBackground(new java.awt.Color(204, 204, 204));
         buscar1.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         buscar1.setText("Buscar");
         buscar1.addActionListener(new java.awt.event.ActionListener() {
@@ -131,6 +132,7 @@ public class ManejarPelicula extends javax.swing.JFrame {
         CampoRating.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5" }));
         getContentPane().add(CampoRating, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 90, 80, -1));
 
+        buscar3.setBackground(new java.awt.Color(204, 204, 204));
         buscar3.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         buscar3.setText("Buscar");
         buscar3.addActionListener(new java.awt.event.ActionListener() {
@@ -170,6 +172,7 @@ public class ManejarPelicula extends javax.swing.JFrame {
         });
         getContentPane().add(eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 430, 160, 20));
 
+        IrAgregar.setBackground(new java.awt.Color(204, 204, 204));
         IrAgregar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         IrAgregar.setText("Agregar Película");
         IrAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -205,31 +208,37 @@ public class ManejarPelicula extends javax.swing.JFrame {
         });
         getContentPane().add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 160, 20));
 
+        accion.setBackground(new java.awt.Color(204, 204, 204));
         generos.add(accion);
         accion.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         accion.setText("Acción");
         getContentPane().add(accion, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
 
+        terror.setBackground(new java.awt.Color(204, 204, 204));
         generos.add(terror);
         terror.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         terror.setText("Terror");
         getContentPane().add(terror, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, -1));
 
+        fantasia.setBackground(new java.awt.Color(204, 204, 204));
         generos.add(fantasia);
         fantasia.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         fantasia.setText("Fantasía");
         getContentPane().add(fantasia, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, -1, -1));
 
+        comedia.setBackground(new java.awt.Color(204, 204, 204));
         generos.add(comedia);
         comedia.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         comedia.setText("Comedia");
         getContentPane().add(comedia, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, -1, -1));
 
+        drama.setBackground(new java.awt.Color(204, 204, 204));
         generos.add(drama);
         drama.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         drama.setText("Drama");
         getContentPane().add(drama, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, -1, -1));
 
+        historia.setBackground(new java.awt.Color(204, 204, 204));
         generos.add(historia);
         historia.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         historia.setText("Historia");
@@ -240,6 +249,8 @@ public class ManejarPelicula extends javax.swing.JFrame {
 
         texto5.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         getContentPane().add(texto5, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 390, 270, 20));
+
+        fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/fondo-azul-gris.jpg"))); // NOI18N
         getContentPane().add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 460));
 
         pack();
@@ -293,17 +304,17 @@ public class ManejarPelicula extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "¡No se ingreso un título!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        int aux = VenInicio.BusBinString(this.campoTitulo.getText(),VenInicio.indPrimPeli);
         
-        if(aux == -1){
+        Object aux = VenInicio.BusBinString(this.campoTitulo.getText(),VenInicio.indPrimPeli);
+        
+        if(((Indice)aux).getNumReg() == -1){
             JOptionPane.showMessageDialog(this, "¡No existe película por ese título!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
         try {
-            this.peliModi = VenInicio.indPrimPeliAcc.buscarRegString(aux);
-            System.out.println(this.peliModi.getClave2());
-            Pelicula p = RandomAccessPelicula.buscarReg(aux);
+            Pelicula p = RandomAccessPelicula.buscarReg(((Indice)aux).getNumReg());
+            this.peliModi = (Indice)aux;
             this.res1.setText("Título: "+p.getTitulo());
             this.res2.setText("Género: "+p.getGenero());
             this.res3.setText("Descripción: "+p.getDescripcion());
@@ -442,10 +453,12 @@ public class ManejarPelicula extends javax.swing.JFrame {
             Logger.getLogger(ManejarPelicula.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+            //Eliminar de la estructura que soporta al indice principal
         Object[] aux = VenInicio.indPrimPeli.toArray();
         int tope = 0, fondo = aux.length-1;
         int med = (tope+fondo)/2;
         
+            //Búsqueda binaria de ubicación en la estructura
         while(!((Indice)aux[med]).getClave2().equals(this.peliModi.getClave2())){
             if(this.peliModi.getClave2().compareTo(((Indice)aux[med]).getClave2()) > 0){
                 tope = med+1;
@@ -461,6 +474,7 @@ public class ManejarPelicula extends javax.swing.JFrame {
             med = (tope+fondo)/2;
         }
         
+            //Remover el viejo y agregar el eliminado
         VenInicio.indPrimPeli.remove(med);
         VenInicio.indPrimPeli.add(med, this.peliModi);
         
@@ -472,11 +486,13 @@ public class ManejarPelicula extends javax.swing.JFrame {
         this.res6.setText("Rating: ");
         this.texto4.setText("");
         this.texto5.setText("");
+        this.eliminar.setVisible(false);
+        this.modificar.setVisible(false);
+        this.comprar.setVisible(false);
     }//GEN-LAST:event_eliminarActionPerformed
 
     private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
         AgregarPelicula aux;
-        System.out.println(this.peliModi.getClave2());
         try {
             aux = new AgregarPelicula(this.peliModi);
             aux.setVisible(true);
@@ -509,16 +525,16 @@ public class ManejarPelicula extends javax.swing.JFrame {
         
         
         int ci = Integer.parseInt(s.trim());
-        int aux = VenInicio.BusBin(ci, VenInicio.indClien);
+        Object aux = VenInicio.BusBin(ci, VenInicio.indClien);
         
-        if(aux == -1){
+        if(((Indice)aux).getNumReg() == -1){
             JOptionPane.showMessageDialog(this, "¡No existe cliente registrado por esa cédula!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
         try {
                 //Datos a manejar
-            Cliente c = RandomAccessCliente.buscarReg(aux);
+            Cliente c = RandomAccessCliente.buscarReg(((Indice)aux).getNumReg());
             Pelicula p = RandomAccessPelicula.buscarReg(this.peliModi.getNumReg());
             
                 //Validaciones
@@ -573,7 +589,7 @@ public class ManejarPelicula extends javax.swing.JFrame {
                 this.res5.setText("Stock: "+p.getStock()+" Unidades");
             }
                 //Actualización de los archivos
-            RandomAccessCliente.ingresarReg(c, aux);
+            RandomAccessCliente.ingresarReg(c, ((Indice)aux).getNumReg());
             RandomAccessPelicula.ingresarReg(p, this.peliModi.getNumReg());
             
             

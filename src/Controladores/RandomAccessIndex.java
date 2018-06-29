@@ -1,6 +1,6 @@
 package Controladores;
 
-import Accesos.Indice;
+import UsuariosDatos.Indice;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -54,8 +54,9 @@ public class RandomAccessIndex {
     }
     
         //Respaldar al finalizar la ejecución
-    public void RespaldoFinalInt(LinkedList l) throws IOException{
+    public void RespaldoFinalInt(LinkedList l, File f) throws IOException{
         Object[] arreglo =  l.toArray();
+        this.clear(f);
         for(int i=0;i<arreglo.length;i++){
             this.flujo.seek(i*this.RegTam);
             this.flujo.writeInt(((Indice)arreglo[i]).getClave());
@@ -64,8 +65,9 @@ public class RandomAccessIndex {
         }
     }
     
-    public void RespaldoFinalString(LinkedList l) throws IOException{
+    public void RespaldoFinalString(LinkedList l, File f) throws IOException{
         Object[] arreglo = l.toArray();
+        this.clear(f);
         for(int i=0;i<arreglo.length;i++){
             this.flujo.seek(i*this.RegTam);
             this.flujo.writeUTF(((Indice)arreglo[i]).getClave2());
@@ -75,29 +77,27 @@ public class RandomAccessIndex {
     
         //Extraer todos los índices al comienzo de una ejecución
     public Object[] ExtraerAllRegInt() throws IOException{
-        Indice[] aux = new Indice[RegNum];
-        LinkedList aux2 = new LinkedList();
-        for(int i=0;i<aux.length;i++){
+        LinkedList aux = new LinkedList();
+        for(int i=0;i<RegNum;i++){
             this.flujo.seek(i*RegTam);
             Indice j = new Indice(this.flujo.readInt(),this.flujo.readUTF(),this.flujo.readInt());
             if(j.getNumReg() != -1){
-                aux2.addLast(j);
+                aux.addLast(j);
             }
         }
-        return aux2.toArray();
+        return aux.toArray();
     }
     
     public Object[] ExtraerAllRegString() throws IOException{
-        Indice[] aux = new Indice[RegNum];
-        LinkedList aux2 = new LinkedList();
-        for(int i=0;i<aux.length;i++){
+        LinkedList aux = new LinkedList();
+        for(int i=0;i<RegNum;i++){
             this.flujo.seek(i*RegTam);
             Indice j = new Indice(this.flujo.readUTF(),this.flujo.readInt());
             if(j.getNumReg() != -1){
-                aux2.addLast(j);
+                aux.addLast(j);
             }
         }
-        return aux2.toArray();
+        return aux.toArray();
     }
     
 }

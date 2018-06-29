@@ -1,8 +1,8 @@
 package Interfaz;
 
-import Accesos.Cliente;
-import Accesos.Indice;
-import Accesos.Pelicula;
+import UsuariosDatos.Cliente;
+import UsuariosDatos.Indice;
+import UsuariosDatos.Pelicula;
 import Controladores.RandomAccessCliente;
 import Controladores.RandomAccessIndex;
 import Controladores.RandomAccessPelicula;
@@ -77,8 +77,8 @@ public class VenInicio extends javax.swing.JFrame {
         
     }
     
-        //Búsqueda binaria de película
-    public static int BusBin(int clave, LinkedList l){
+        //Búsqueda binaria de clientes
+    public static Object BusBin(int clave, LinkedList l){
         Object[] arreglo =  l.toArray();
         int tope = 0;
         int fondo = arreglo.length-1;
@@ -97,14 +97,14 @@ public class VenInicio extends javax.swing.JFrame {
             }
         }
         if(tope>fondo){
-            return -1;
+            return new Indice("",-1);
         }else{
-            return ((Indice)arreglo[med]).getNumReg();
+            return ((Indice)arreglo[med]);
         }
     }
     
         //Búsqueda binaria de película
-    public static int BusBinString(String clave, LinkedList l){
+    public static Object BusBinString(String clave, LinkedList l){
         Object[] arreglo = l.toArray();
         int tope = 0;
         int fondo = arreglo.length-1;
@@ -123,9 +123,9 @@ public class VenInicio extends javax.swing.JFrame {
             }
         }
         if(tope>fondo){
-            return -1;
+            return new Indice("",-1);
         }else{
-            return ((Indice)arreglo[med]).getNumReg();
+            return ((Indice)arreglo[med]);
         }
     }
     
@@ -191,6 +191,8 @@ public class VenInicio extends javax.swing.JFrame {
         imagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Blockbuster_logo2.png"))); // NOI18N
         imagen.setText("Blockbuster LLC  © ");
         getContentPane().add(imagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 360, 110));
+
+        fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/fondo-azul-gris.jpg"))); // NOI18N
         getContentPane().add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
 
         pack();
@@ -201,8 +203,10 @@ public class VenInicio extends javax.swing.JFrame {
         try {
             RandomAccessCliente.cerrarFlujo();
             RandomAccessPelicula.cerrarFlujo();
-            VenInicio.indClienAcc.RespaldoFinalInt(VenInicio.indClien);
-            VenInicio.indPrimPeliAcc.RespaldoFinalString(VenInicio.indPrimPeli);
+            File f = new File("Llaves_Cliente.txt");
+            VenInicio.indClienAcc.RespaldoFinalInt(VenInicio.indClien,f);
+            f = new File("Llaves_Principales_Peliculas.txt");
+            VenInicio.indPrimPeliAcc.RespaldoFinalString(VenInicio.indPrimPeli, f);
         } catch (IOException ex) {
             Logger.getLogger(VenInicio.class.getName()).log(Level.SEVERE, null, ex);
         }

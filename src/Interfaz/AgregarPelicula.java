@@ -1,7 +1,7 @@
 package Interfaz;
 
-import Accesos.Indice;
-import Accesos.Pelicula;
+import UsuariosDatos.Indice;
+import UsuariosDatos.Pelicula;
 import Controladores.RandomAccessPelicula;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -181,35 +181,43 @@ public class AgregarPelicula extends javax.swing.JFrame {
         rating.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5" }));
         getContentPane().add(rating, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 280, 50, 20));
 
+        accion.setBackground(new java.awt.Color(204, 204, 204));
         generos.add(accion);
         accion.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         accion.setText("Acción");
         getContentPane().add(accion, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, -1, -1));
 
+        comedia.setBackground(new java.awt.Color(204, 204, 204));
         generos.add(comedia);
         comedia.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         comedia.setText("Comedia");
         getContentPane().add(comedia, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 50, -1, -1));
 
+        drama.setBackground(new java.awt.Color(204, 204, 204));
         generos.add(drama);
         drama.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         drama.setText("Drama");
         getContentPane().add(drama, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 50, -1, -1));
 
+        terror.setBackground(new java.awt.Color(204, 204, 204));
         generos.add(terror);
         terror.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         terror.setText("Terror");
         getContentPane().add(terror, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, -1, -1));
 
+        fantasia.setBackground(new java.awt.Color(204, 204, 204));
         generos.add(fantasia);
         fantasia.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         fantasia.setText("Fantasía");
         getContentPane().add(fantasia, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, -1, -1));
 
+        historia.setBackground(new java.awt.Color(204, 204, 204));
         generos.add(historia);
         historia.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         historia.setText("Historia");
         getContentPane().add(historia, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 80, -1, -1));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/fondo-azul-gris.jpg"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 340));
 
         pack();
@@ -253,7 +261,7 @@ public class AgregarPelicula extends javax.swing.JFrame {
         }
         
             //Verificar si hay una película por el mismo título
-        if(VenInicio.BusBinString(this.campo1.getText(),VenInicio.indPrimPeli) != -1){
+        if(((Indice)VenInicio.BusBinString(this.campo1.getText(),VenInicio.indPrimPeli)).getNumReg() != -1){
             JOptionPane.showMessageDialog(this, "¡Ya hay película por este nombre!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -324,13 +332,6 @@ public class AgregarPelicula extends javax.swing.JFrame {
         Pelicula p = new Pelicula(this.campo1.getText(), Long.parseLong(this.campo4.getText()), this.rating.getSelectedIndex(), genero, Integer.parseInt(this.campo6.getText()), this.campo3.getText(), 0, "");
         Indice in = new Indice(p.getTitulo(), RandomAccessPelicula.getRegNum());
         
-        try {
-            RandomAccessPelicula.ingresarReg(p);
-            VenInicio.indPrimPeliAcc.ingresarRegString(in,in.getNumReg());
-        } catch (IOException ex) {
-            Logger.getLogger(AgregarPelicula.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
             //Agregar y ordenar a la estructura auxiliar
         VenInicio.indPrimPeli.addLast(in);
         Object[] aux = VenInicio.ordenarClavesString(VenInicio.indPrimPeli);
@@ -341,6 +342,14 @@ public class AgregarPelicula extends javax.swing.JFrame {
             VenInicio.indPrimPeli.addLast(aux[i]);
         }
             
+            //Escritura de datos en el archivo
+        try {
+            RandomAccessPelicula.ingresarReg(p);
+            VenInicio.indPrimPeliAcc.ingresarRegString(in,in.getNumReg());
+        } catch (IOException ex) {
+            Logger.getLogger(AgregarPelicula.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         ManejarPelicula aux3 = new ManejarPelicula();
         aux3.setVisible(true);
         this.dispose();
@@ -396,7 +405,7 @@ public class AgregarPelicula extends javax.swing.JFrame {
             Pelicula p = RandomAccessPelicula.buscarReg(this.in.getNumReg());
             
                 //Verificar si hay una película por el mismo título que no sea la que se modifica
-            if(VenInicio.BusBinString(this.campo1.getText(),VenInicio.indPrimPeli) != -1 && this.campo1.getText().compareTo(p.getTitulo()) != 0){
+            if(((Indice)VenInicio.BusBinString(this.campo1.getText(),VenInicio.indPrimPeli)).getNumReg() != -1 && this.campo1.getText().compareTo(p.getTitulo()) != 0){
                 JOptionPane.showMessageDialog(this, "¡Ya hay película por este nombre!", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 return;
             }

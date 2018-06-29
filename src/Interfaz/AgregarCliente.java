@@ -1,8 +1,8 @@
 package Interfaz;
 
-import Accesos.Cliente;
-import Accesos.Indice;
-import Accesos.Pelicula;
+import UsuariosDatos.Cliente;
+import UsuariosDatos.Indice;
+import UsuariosDatos.Pelicula;
 import Controladores.RandomAccessCliente;
 import Controladores.RandomAccessPelicula;
 import java.io.IOException;
@@ -124,6 +124,8 @@ public class AgregarCliente extends javax.swing.JFrame {
             }
         });
         getContentPane().add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, 100, 20));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/fondo-azul-gris.jpg"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 230));
 
         pack();
@@ -160,7 +162,7 @@ public class AgregarCliente extends javax.swing.JFrame {
         String nomape = this.campo2.getText() +"%"+ this.campo3.getText();
         
             //Verificar si ya se ha añadido esa cédula
-        if(VenInicio.BusBin(ci,VenInicio.indClien)!= -1){
+        if(((Indice)VenInicio.BusBin(ci,VenInicio.indClien)).getNumReg() != -1){
             JOptionPane.showMessageDialog(this, "¡Ya existe cliente con esa cédula!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -225,7 +227,7 @@ public class AgregarCliente extends javax.swing.JFrame {
             
                 //Verificar si no existe cliente con esa cédula y distinto a la que se está buscando
             int ci = Integer.parseInt(this.campo1.getText().trim());
-            if(VenInicio.BusBin(ci, VenInicio.indClien) != -1 && ci != c.getCi() ){
+            if(((Indice)VenInicio.BusBin(ci, VenInicio.indClien)).getNumReg() != -1 && ci != c.getCi() ){
                 JOptionPane.showMessageDialog(this, "¡Ya existe cliente con esa cédula!", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 return;
             }
@@ -261,10 +263,10 @@ public class AgregarCliente extends javax.swing.JFrame {
             RandomAccessCliente.ingresarReg(c,this.in.getNumReg());
             
             if(!"0".equals(c.getPelicula())){
-                int aux2 = VenInicio.BusBinString(c.getPelicula(), VenInicio.indPrimPeli);
-                Pelicula p = RandomAccessPelicula.buscarReg(aux2);
+                Object aux2 = VenInicio.BusBinString(c.getPelicula(), VenInicio.indPrimPeli);
+                Pelicula p = RandomAccessPelicula.buscarReg(((Indice)aux2).getNumReg());
                 p.setUltimo(nomape);
-                RandomAccessPelicula.ingresarReg(p,aux2);
+                RandomAccessPelicula.ingresarReg(p,((Indice)aux2).getNumReg());
             }
             
         } catch (IOException ex) {

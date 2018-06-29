@@ -1,8 +1,8 @@
 package Interfaz;
 
-import Accesos.Cliente;
-import Accesos.Indice;
-import Accesos.Pelicula;
+import UsuariosDatos.Cliente;
+import UsuariosDatos.Indice;
+import UsuariosDatos.Pelicula;
 import Controladores.RandomAccessCliente;
 import Controladores.RandomAccessPelicula;
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class ManejarCliente extends javax.swing.JFrame {
         texto6 = new javax.swing.JLabel();
         modificar = new javax.swing.JButton();
         devolver = new javax.swing.JButton();
-        texto7 = new javax.swing.JLabel();
+        fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -63,6 +63,7 @@ public class ManejarCliente extends javax.swing.JFrame {
         texto1.setText("Cédula del cliente: ");
         getContentPane().add(texto1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 130, -1));
 
+        botonBuscar.setBackground(new java.awt.Color(204, 204, 204));
         botonBuscar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         botonBuscar.setText("Buscar");
         botonBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -72,6 +73,7 @@ public class ManejarCliente extends javax.swing.JFrame {
         });
         getContentPane().add(botonBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 70, 80, -1));
 
+        volver.setBackground(new java.awt.Color(255, 255, 255));
         volver.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         volver.setText("Volver");
         volver.addActionListener(new java.awt.event.ActionListener() {
@@ -81,6 +83,7 @@ public class ManejarCliente extends javax.swing.JFrame {
         });
         getContentPane().add(volver, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 270, 80, 20));
 
+        irAgregarCliente.setBackground(new java.awt.Color(204, 204, 204));
         irAgregarCliente.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         irAgregarCliente.setText("Agregar Cliente");
         irAgregarCliente.addActionListener(new java.awt.event.ActionListener() {
@@ -90,6 +93,7 @@ public class ManejarCliente extends javax.swing.JFrame {
         });
         getContentPane().add(irAgregarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 70, 130, -1));
 
+        eliminar.setBackground(new java.awt.Color(255, 255, 255));
         eliminar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         eliminar.setText("Eliminar Cliente");
         eliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -119,6 +123,7 @@ public class ManejarCliente extends javax.swing.JFrame {
         texto6.setText("Fecha máxima de devolución:");
         getContentPane().add(texto6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 350, 20));
 
+        modificar.setBackground(new java.awt.Color(255, 255, 255));
         modificar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         modificar.setText("Modificar Datos");
         modificar.addActionListener(new java.awt.event.ActionListener() {
@@ -128,6 +133,7 @@ public class ManejarCliente extends javax.swing.JFrame {
         });
         getContentPane().add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 140, 20));
 
+        devolver.setBackground(new java.awt.Color(255, 255, 255));
         devolver.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         devolver.setText("Devolver Película");
         devolver.addActionListener(new java.awt.event.ActionListener() {
@@ -136,7 +142,9 @@ public class ManejarCliente extends javax.swing.JFrame {
             }
         });
         getContentPane().add(devolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 270, 150, 20));
-        getContentPane().add(texto7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
+
+        fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/fondo-azul-gris.jpg"))); // NOI18N
+        getContentPane().add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -147,16 +155,16 @@ public class ManejarCliente extends javax.swing.JFrame {
             Cliente c = RandomAccessCliente.buscarReg(this.clienModi.getNumReg());
             
             if(!"0".equals(c.getPelicula())){
-                int aux = VenInicio.BusBinString(c.getPelicula(), VenInicio.indPrimPeli);
+                Object aux = VenInicio.BusBinString(c.getPelicula(), VenInicio.indPrimPeli);
                 
-                if(aux != -1){
-                    Pelicula p = RandomAccessPelicula.buscarReg(aux);
+                if(((Indice)aux).getNumReg() != -1){
+                    Pelicula p = RandomAccessPelicula.buscarReg(((Indice)aux).getNumReg());
                     if(p.getStock() == 0){
                         p.setUltimo("");
                         p.setFechaUlt(0);
                     }
                     p.setStock(p.getStock() + 1);
-                    RandomAccessPelicula.ingresarReg(p,aux);
+                    RandomAccessPelicula.ingresarReg(p,((Indice)aux).getNumReg());
                 }
                 
             }
@@ -167,10 +175,12 @@ public class ManejarCliente extends javax.swing.JFrame {
         
         this.clienModi.setNumReg(-1);
         
+            //Eliminar de la estructura de soporte del indice principal
         Object[] aux = VenInicio.indClien.toArray();
         int tope = 0, fondo = aux.length-1;
         int med = (tope+fondo)/2;
         
+            //Búsqueda binaria de ubicación en la estructura
         while(((Indice)aux[med]).getClave() != this.clienModi.getClave()){
             if(this.clienModi.getClave() > ((Indice)aux[med]).getClave()){
                 tope = med+1;
@@ -186,6 +196,7 @@ public class ManejarCliente extends javax.swing.JFrame {
             med = (tope+fondo)/2;
         }
         
+            //Remover viejo añadir eliminado
         VenInicio.indClien.remove(med);
         VenInicio.indClien.add(med, this.clienModi);
         
@@ -196,8 +207,6 @@ public class ManejarCliente extends javax.swing.JFrame {
         this.texto4.setText("Película alquilada: ");
         this.texto5.setText("Fecha de alquiler: ");
         this.texto6.setText("Fecha máxima de devolución: ");
-        
-        
     }//GEN-LAST:event_eliminarActionPerformed
 
     private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed
@@ -217,18 +226,16 @@ public class ManejarCliente extends javax.swing.JFrame {
         int ci = Integer.parseInt(this.campoCi.getText());
         
             //Buscar si existe el cliente
-        int aux = VenInicio.BusBin(ci,VenInicio.indClien);
-        if(aux == -1){
+        Object aux = VenInicio.BusBin(ci,VenInicio.indClien);
+        if(((Indice)aux).getNumReg() == -1){
             JOptionPane.showMessageDialog(this, "¡No hay cliente que posea esa cédula!", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
             //Extrar los datos del archivo
         try {
+            this.clienModi = (Indice)aux;
             
-            Indice in = VenInicio.indClienAcc.buscarReg(aux);
-            this.clienModi = in;
-            
-            Cliente c = RandomAccessCliente.buscarReg(in.getNumReg());
+            Cliente c = RandomAccessCliente.buscarReg(((Indice)aux).getNumReg());
             
             String auxNom = "", auxApe = "";
             char[] aux2 = c.getNomape().toCharArray();
@@ -307,22 +314,22 @@ public class ManejarCliente extends javax.swing.JFrame {
                 return;
             }
             
-            int aux = VenInicio.BusBinString(c.getPelicula(), VenInicio.indPrimPeli);
-            if(aux != -1){
-                Pelicula p = RandomAccessPelicula.buscarReg(aux);
+            Object aux = VenInicio.BusBinString(c.getPelicula(), VenInicio.indPrimPeli);
+            if(((Indice)aux).getNumReg() != -1){
+                Pelicula p = RandomAccessPelicula.buscarReg(((Indice)aux).getNumReg());
                 if(p.getStock() == 0){
                     p.setUltimo("");
                     p.setFechaUlt(0);
                 }
                 p.setStock(p.getStock() + 1);
-                RandomAccessPelicula.ingresarReg(p,aux);
+                RandomAccessPelicula.ingresarReg(p,((Indice)aux).getNumReg());
             }
             c.setFechaAlq(0);
             c.setFechaVenc(0);
             c.setPelicula("0");
             
-            aux = VenInicio.BusBin(c.getCi(), VenInicio.indClien);
-            RandomAccessCliente.ingresarReg(c,aux);
+            Object aux2 = VenInicio.BusBin(c.getCi(), VenInicio.indClien);
+            RandomAccessCliente.ingresarReg(c,((Indice)aux2).getNumReg());
             
             this.texto4.setText("Película Alquilada: 0");
             this.texto5.setText("Fecha de Alquiler: NA");
@@ -338,6 +345,7 @@ public class ManejarCliente extends javax.swing.JFrame {
     private javax.swing.JTextField campoCi;
     private javax.swing.JButton devolver;
     private javax.swing.JButton eliminar;
+    private javax.swing.JLabel fondo;
     private javax.swing.JButton irAgregarCliente;
     private javax.swing.JButton modificar;
     private javax.swing.JLabel texto1;
@@ -346,7 +354,6 @@ public class ManejarCliente extends javax.swing.JFrame {
     private javax.swing.JLabel texto4;
     private javax.swing.JLabel texto5;
     private javax.swing.JLabel texto6;
-    private javax.swing.JLabel texto7;
     private javax.swing.JButton volver;
     // End of variables declaration//GEN-END:variables
 }

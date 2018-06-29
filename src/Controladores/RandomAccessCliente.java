@@ -1,7 +1,7 @@
 package Controladores;
 
     //Imports I/O
-import Accesos.Cliente;
+import UsuariosDatos.Cliente;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
